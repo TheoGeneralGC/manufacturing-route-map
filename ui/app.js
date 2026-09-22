@@ -321,10 +321,19 @@
   function hasUsableStreet(p) {
     return Boolean(p.address.trim()) && !p.location_requires_access_review && !/\bP\s*\.?\s*O\s*\.?\s*BOX\b|\bP\s*\.?\s*M\s*\.?\s*B\b|\bMAILBOX\b/i.test(p.address);
   }
-  function directionsUrl(p, apple = false) {
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (/Mac/.test(navigator.platform || '') && navigator.maxTouchPoints > 1);
+  }
+  function geminiAppUrl() {
+    if (isIOS()) return 'googlegemini://';
+    // Google's mobile handoff route is associated with its installed apps;
+    // /app is the web workspace and may stay in a browser.
+    return /Android/i.test(navigator.userAgent || '') ? 'https://gemini.google.com/app/download/mobile' : '';
+  }
+  function directionsUrl(p, apple = false, browser = false) {
     const destination = hasUsableStreet(p) ? fullAddress(p) : p.mapped ? `${p.latitude},${p.longitude}` : '';
     if (!destination) return '';
-    return apple ? `https://maps.apple.com/?daddr=${encodeURIComponent(destination)}&dirflg=d` : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}&travelmode=driving`;
+    return apple ? `${isIOS() && !browser ? 'maps://' : 'https://maps.apple.com/'}?daddr=${encodeURIComponent(destination)}&dirflg=d` : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}&travelmode=driving`;
   }
   function sourceList(p) {
     const records = Array.isArray(p.sources) ? p.sources : [];
@@ -373,19 +382,37 @@ ${JSON.stringify(facts,null,2)}
 END BUSINESS RECORD`;
   }
   function openGemini(p) {
+    const appUrl = geminiAppUrl(), open = $('gemini-open'), copy = $('gemini-copy-open');
     $('gemini-business').textContent = `${p.name} · ${fullAddress(p)}`;
     $('gemini-brief').value = businessBrief(p);
     $('gemini-status').textContent = 'Copy this brief, then paste it in Gemini.';
-    $('gemini-copy-open').disabled = false;
+    copy.disabled = false;
+    copy.textContent = appUrl ? 'Copy brief again' : 'Copy & open Gemini';
+    copy.classList.toggle('button-primary',!appUrl);
+    open.href = appUrl || 'https://gemini.google.com/app';
+    open.target = appUrl ? '_self' : '_blank';
+    open.textContent = appUrl ? 'Open Gemini app ↗' : 'Open Gemini ↗';
+    open.classList.toggle('button-primary',Boolean(appUrl));
+    open.setAttribute('aria-disabled','false');
+    $('gemini-web').hidden = !appUrl;
     $('gemini-dialog').showModal();
+    // Copy during this tap, then let a fresh tap follow the native app link.
+    // Redirecting a new browser tab after awaiting the clipboard loses app handoff on iOS.
+    if (appUrl) return copyAndOpenGemini();
   }
   async function copyAndOpenGemini() {
-    const button = $('gemini-copy-open'), brief = $('gemini-brief');
+    const button = $('gemini-copy-open'), brief = $('gemini-brief'), appUrl = geminiAppUrl(), open = $('gemini-open');
     button.disabled = true;
+    if (appUrl) { open.setAttribute('aria-disabled','true'); $('gemini-status').textContent = 'Copying brief…'; }
     let destination;
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
       const copying = navigator.clipboard.writeText(brief.value);
+      if (appUrl) {
+        await copying;
+        $('gemini-status').textContent = 'Brief copied. Tap Open Gemini app, then paste.';
+        return;
+      }
       // Reserve the new tab during the tap, keeping the map and GPS filters intact.
       try { destination = window.open('about:blank','_blank'); if (destination) destination.opener = null; } catch { /* Explicit link remains available. */ }
       await copying;
@@ -396,8 +423,8 @@ END BUSINESS RECORD`;
     } catch {
       if (destination && !destination.closed) destination.close();
       brief.focus(); brief.select();
-      $('gemini-status').textContent = 'Copy the selected brief manually, then tap Open Gemini and paste it.';
-    } finally { button.disabled = false; }
+      $('gemini-status').textContent = `Copy the selected brief manually, then tap ${appUrl ? 'Open Gemini app' : 'Open Gemini'} and paste it.`;
+    } finally { button.disabled = false; open.setAttribute('aria-disabled','false'); }
   }
   function openDetail(p, pan) {
     if (!p) return;
@@ -417,11 +444,11 @@ END BUSINESS RECORD`;
     const focusedControl = $('detail-panel').contains(document.activeElement) ? document.activeElement.id : '';
     const note = state.notes[p.id] || {}, website = websiteUrl(p.website);
     const phone = phoneHref(p.phone);
-    const googleDirections = directionsUrl(p), appleDirections = googleDirections ? directionsUrl(p,true) : '';
+    const googleDirections = directionsUrl(p), appleDirections = googleDirections ? directionsUrl(p,true) : '', nativeApple = isIOS();
     const quality = qualityClass(p);
     const warning = !googleDirections ? 'A physical street address is needed before directions can be provided. This record has no usable map coordinates.' : !hasUsableStreet(p) ? 'No usable street address is listed. Directions use the map coordinates; confirm they point to the plant.' : !p.mapped ? 'This record has no usable coordinates. Directions use the listed address.' : quality === 'approximate' ? 'This map pin is approximate. Directions use the listed street address when available.' : p.evidence_type === 'historical_registry' ? 'This is a historical / unverified registry record. Confirm present activity and the address before visiting.' : '';
     $('detail-panel').innerHTML = `<button class="button square detail-close" id="detail-close" aria-label="Close location details">${icon('close')}</button><div class="detail-category"><i class="evidence-dot"></i>${esc(evidenceLabels[p.evidence_type])}</div><h2 class="detail-name">${esc(p.name)}</h2><p class="detail-address">${esc(fullAddress(p) || 'Street address not reported')}${p.legal_name && p.legal_name.toLocaleLowerCase() !== p.name.toLocaleLowerCase() ? `<br>Reported business: ${esc(p.legal_name)}` : ''}${p.county ? `<br>${esc(p.county)} County` : ''}${p.distance !== null ? `<br>${distanceLabel(p)} from your selected starting point (straight line)` : ''}</p>
-      <div class="detail-actions">${googleDirections ? `<a class="button button-primary directions" href="${esc(googleDirections)}" target="_blank" rel="noopener noreferrer">${icon('route')}Get directions in Google Maps</a>` : `<button type="button" class="button directions" disabled>${icon('route')}Street address needed for directions</button>`}<button class="button" id="detail-gemini">Ask Gemini ↗</button><button class="button${note.visited ? ' is-active' : ''}" id="detail-visited" aria-pressed="${Boolean(note.visited)}">${icon('check')}${note.visited ? 'Visited' : 'Mark visited'}</button></div>${appleDirections ? `<a class="apple-directions" href="${esc(appleDirections)}" target="_blank" rel="noopener noreferrer">Open in Apple Maps ↗</a>` : ''}
+      <div class="detail-actions">${googleDirections ? `<a class="button button-primary directions" href="${esc(googleDirections)}" target="_blank" rel="noopener noreferrer">${icon('route')}Get directions in Google Maps</a>` : `<button type="button" class="button directions" disabled>${icon('route')}Street address needed for directions</button>`}<button class="button" id="detail-gemini">Ask Gemini ↗</button><button class="button${note.visited ? ' is-active' : ''}" id="detail-visited" aria-pressed="${Boolean(note.visited)}">${icon('check')}${note.visited ? 'Visited' : 'Mark visited'}</button></div>${appleDirections ? `<div class="apple-map-links"><a class="apple-directions" href="${esc(appleDirections)}" target="${nativeApple ? '_self' : '_blank'}" rel="noopener noreferrer">Open in Apple Maps ↗</a>${nativeApple ? `<a href="${esc(directionsUrl(p,true,true))}" target="_blank" rel="noopener noreferrer">Browser</a>` : ''}</div>` : ''}
       <dl class="detail-facts"><div><dt>EMPLOYEES</dt><dd class="employee-detail-value ${employeeBandInfo(p).className}"><i class="employee-swatch" aria-hidden="true"></i><span class="${p.bounds ? 'large-value' : ''}">${esc(employeeLabel(p))}</span></dd>${p.headcount_multiple_addresses ? `<small class="employee-scope-warning">${esc(employeeLabel(p))} reported across multiple addresses. Individual building counts are unavailable.</small>` : ''}<small>${esc(p.employee_scope || (p.bounds ? 'Scope not specified by source' : 'No reported headcount'))}</small></div><div><dt>SOURCE STATUS</dt><dd>${esc(p.operating_status === 'unknown' ? 'Not verified' : p.operating_status)}</dd>${note.visited_at ? `<small>Visited ${esc(dateLabel(note.visited_at))}</small>` : ''}</div><div class="full"><dt>INDUSTRY</dt><dd>${esc(p.industry_detail || p.industry)}</dd>${p.naics ? `<small>NAICS ${esc(p.naics)}</small>` : ''}</div><div class="full"><dt>REPORTED OWNER</dt><dd>${esc(p.owner_name || 'Not reported')}</dd>${ownerDetails(p)}</div>${p.headcount_evidence?.length ? `<div class="full"><dt>ADDITIONAL STAFFING SOURCES</dt><dd>${additionalStaffing(p)}</dd></div>` : ''}${p.contact_name ? `<div class="full"><dt>REPORTED BUSINESS CONTACT</dt><dd>${esc(p.contact_name)}</dd><small>${esc(p.contact_role || 'Role not specified')} · Not necessarily the owner</small></div>` : ''}${website || phone ? `<div class="full contact-links">${phone ? `<a href="${esc(phone)}">${esc(p.phone)}</a>` : ''}${website ? `<a href="${esc(website)}" target="_blank" rel="noopener noreferrer">Business website ↗</a>` : ''}</div>` : ''}</dl>
       ${warning ? `<div class="detail-warning">${esc(warning)}</div>` : ''}<section class="detail-section"><label class="notes-label" for="visit-notes">Your field notes <span id="notes-status">Saved on this device</span></label><textarea id="visit-notes" placeholder="Who you met, best time to return, what to follow up on…" maxlength="12000">${esc(note.notes || '')}</textarea><p class="detail-footnote">Notes and visit history stay in this browser. Back them up from About the data before switching devices.</p></section>
       <section class="detail-section"><h3>Location & source</h3><p>${p.mapped ? `Coordinates: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}<br>` : ''}Location precision: ${esc(p.geocode_quality || 'Not reported')}${p.geocode_provider ? `<br>Coordinate provider: ${esc(p.geocode_provider)}` : ''}${p.headcount_multiple_addresses && p.employee_source_address ? `<br>Employee reporting addresses: ${esc(p.employee_source_address)}` : ''}${p.updated_at ? `<br>Record date: ${esc(dateLabel(p.updated_at) || p.updated_at)}` : ''}</p>${sourceList(p)}${p.notes ? `<p>${esc(textValue(p.notes))}</p>` : ''}</section>`;
@@ -619,6 +646,7 @@ END BUSINESS RECORD`;
     });
     $('radius-filter').addEventListener('change',() => { if (!state.origin) return; state.radius=Number($('radius-filter').value); filterResults(); state.map.setView([state.origin.lat,state.origin.lng],nearbyZoom(),{animate:false}); $('result-list').scrollTop=0; });
     $('gemini-copy-open').addEventListener('click',copyAndOpenGemini);
+    $('gemini-open').addEventListener('click',(event) => { if ($('gemini-copy-open').disabled) event.preventDefault(); });
     $('plan-route-button').addEventListener('click',openRoute);
     $('mobile-route-button').addEventListener('click',openRoute);
     $('route-clear-button').addEventListener('click',() => { state.routeIds=[]; renderRoute(); });

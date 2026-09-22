@@ -383,6 +383,34 @@ async function testMobileAndProductionLoading() {
   context.navigator.clipboard={async writeText(){throw Error('denied');}};
   await copyAndOpenGemini();assert.equal(destination,'');assert.equal(element('gemini-brief').selected,true);assert.match(element('gemini-status').textContent,/manually/);
   delete context.navigator.clipboard;await copyAndOpenGemini();assert.equal(destination,'');assert.match(element('gemini-status').textContent,/manually/);
+  // Native handoff must come from a fresh link tap, never an async blank-tab redirect.
+  context.navigator.userAgent='Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 Version/18.4 Mobile Safari/604.1';
+  context.window.open=()=>{throw Error('iPhone handoff must not create a browser tab');};
+  let finishCopy,prevented=false;
+  context.navigator.clipboard={writeText(value){copied=value;return new Promise(resolve=>{finishCopy=resolve;});}};
+  const nativeCopy=openGemini(company);
+  element('gemini-open').listeners.click({preventDefault(){prevented=true;}});
+  assert.equal(prevented,true,'App launch waits until the brief is ready to paste.');
+  finishCopy();await nativeCopy;
+  assert.equal(copied,brief);assert.equal(element('gemini-open').href,'googlegemini://');assert.equal(element('gemini-open').target,'_self');
+  assert.equal(element('gemini-web').hidden,false);assert.match(element('gemini-status').textContent,/Brief copied/);
+  prevented=false;element('gemini-open').listeners.click({preventDefault(){prevented=true;}});
+  assert.equal(prevented,false,'A ready app link follows the direct user tap.');
+  const nativeMaps=new URL(directionsUrl(company,true));
+  assert.equal(nativeMaps.protocol,'maps:');assert.equal(nativeMaps.searchParams.get('daddr'),'18520 Stanford Rd, Tracy CA 95377');assert.equal(nativeMaps.searchParams.get('dirflg'),'d');
+  assert.equal(new URL(directionsUrl(company,true,true)).protocol,'https:','Apple Maps keeps an explicit browser fallback.');
+  state.selected=company;renderDetail();assert.match(element('detail-panel').innerHTML,/href="maps:\/\/\?daddr=[^"]+" target="_self"/);
+  context.navigator.clipboard={async writeText(){throw Error('denied');}};
+  await openGemini(company);assert.match(element('gemini-status').textContent,/manually/);assert.equal(element('gemini-open')['aria-disabled'],'false','Manual copying still permits the direct app link.');
+  context.navigator.userAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15)';context.navigator.platform='MacIntel';context.navigator.maxTouchPoints=5;
+  assert.equal(new URL(directionsUrl(company,true)).protocol,'maps:','iPad desktop mode still receives native Maps links.');
+  context.navigator.maxTouchPoints=0;
+  assert.equal(new URL(directionsUrl(company,true)).protocol,'https:','Desktop browsers retain usable web links.');
+  openGemini(company);assert.equal(element('gemini-open').target,'_blank');assert.equal(element('gemini-web').hidden,true);
+  context.navigator.userAgent='Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36';
+  context.navigator.clipboard={async writeText(value){copied=value;}};
+  await openGemini(company);assert.equal(element('gemini-open').href,'https://gemini.google.com/app/download/mobile');assert.equal(element('gemini-open').target,'_self');assert.equal(element('gemini-web').hidden,false);
+  delete context.navigator.userAgent;delete context.navigator.platform;delete context.navigator.maxTouchPoints;
   // Route selection remains available after removing the shortlist action.
   state.selected=null;state.origin=null;state.plants=[near,tracy];state.plantsById=new Map(state.plants.map(p=>[p.id,p]));state.filtered=[tracy];state.notes={};state.routeIds=[];
   renderRoute();assert.match(element('route-options').innerHTML,/Tracy Plant/);assert.doesNotMatch(element('route-options').innerHTML,/Add to shortlist/);
