@@ -292,12 +292,24 @@ async function testMobileAndProductionLoading() {
   assert.equal(element('results-panel').hidden,false,'Typing opens an optional result sheet.');
   assert.deepEqual(Array.from(state.filtered,p=>p.id),['tracy']);
   assert.ok(state.map.points.length===1,'Destination search centers its matching map points.');
+  useLocation();success({coords:{latitude:37.33,longitude:-121.89,accuracy:18}});
+  state.filters.employee='250+';state.inView=true;state.status='saved';
+  state.notes.near={saved:true,notes:'Keep this note'};
+  element('clear-location').listeners.click();
+  assert.equal(state.origin,null);assert.equal(state.radius,null);assert.equal(state.locating,false);
+  assert.equal(state.originMarker,null);assert.equal(state.accuracyCircle,null);
+  assert.equal(element('nearby-controls').hidden,true);assert.equal(element('results-panel').hidden,true);
+  assert.equal(state.inView,false);assert.equal(state.status,'all');assert.equal(element('search').value,'');
+  assert.deepEqual(Array.from(state.filtered,p=>p.id).sort(),['near','tracy','unmapped'],'Turning location off restores all current-source results, including address-only entries.');
+  assert.deepEqual(Array.from(state.map.points,p=>Array.from(p)),[[near.latitude,near.longitude],[tracy.latitude,tracy.longitude]],'Turning location off zooms out to every mapped current-source location.');
+  assert.ok(state.plants.every(p=>p.distance===null));
+  assert.equal(state.notes.near.notes,'Keep this note');assert.equal(state.notes.near.saved,true);
   for (const [code,pattern] of [[1,/permission denied/],[2,/Location unavailable/],[3,/timed out/]]) {
     useLocation();failure({code});assert.match(element('location-status').textContent,pattern);assert.equal(state.locating,false);assert.equal(element('near-me-button').disabled,false);
   }
   const before=requested;context.window.isSecureContext=false;useLocation();assert.equal(requested,before);assert.match(element('location-status').textContent,/HTTPS/);context.window.isSecureContext=true;
   const geolocation=context.navigator.geolocation;delete context.navigator.geolocation;useLocation();assert.match(element('location-status').textContent,/unavailable in this browser/);context.navigator.geolocation=geolocation;
-  useLocation();const staleSuccess=success;clearNearby();staleSuccess({coords:{latitude:38,longitude:-121,accuracy:12}});assert.equal(state.origin,null,'A pending GPS callback cannot undo All areas.');
+  useLocation();const staleSuccess=success;element('clear-location').listeners.click();staleSuccess({coords:{latitude:38,longitude:-121,accuracy:12}});assert.equal(state.origin,null,'A pending GPS callback cannot undo Turn off location.');
   useLocation();success({coords:{latitude:NaN,longitude:-121,accuracy:12}});assert.equal(state.origin,null);assert.match(element('location-status').textContent,/invalid location/);
   clearNearby();
 

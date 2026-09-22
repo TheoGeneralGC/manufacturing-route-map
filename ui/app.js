@@ -251,7 +251,7 @@
   }
   function renderList() {
     if (!state.filtered.length) {
-      $('result-list').innerHTML = `<div class="empty-state">${icon('search')}<h3>${state.radius !== null ? `No matches within ${state.radius} miles.` : 'No locations here yet.'}</h3><p>${state.status === 'saved' ? 'Shortlist locations from their detail cards to plan your next stops.' : state.status === 'visited' ? 'Mark a location visited after your conversation. It will appear here.' : state.radius !== null ? 'Choose a wider radius or All areas. This guide covers the Central Valley and surrounding counties; locations without coordinates cannot appear nearby.' : 'Try another search, widen the map, or adjust your filters.'}</p><button class="button" id="empty-reset">Reset search & filters</button></div>`;
+      $('result-list').innerHTML = `<div class="empty-state">${icon('search')}<h3>${state.radius !== null ? `No matches within ${state.radius} miles.` : 'No locations here yet.'}</h3><p>${state.status === 'saved' ? 'Shortlist locations from their detail cards to plan your next stops.' : state.status === 'visited' ? 'Mark a location visited after your conversation. It will appear here.' : state.radius !== null ? 'Choose a wider radius or Turn off location. This guide covers the Central Valley and surrounding counties; locations without coordinates cannot appear nearby.' : 'Try another search, widen the map, or adjust your filters.'}</p><button class="button" id="empty-reset">Reset search & filters</button></div>`;
       $('empty-reset').addEventListener('click',resetAll); return;
     }
     $('result-list').innerHTML = state.filtered.slice(0,state.limit).map((p) => {
@@ -404,6 +404,7 @@
   }
   function clearNearby(update = true) {
     state.origin = null; state.radius = null; state.locationRequest++; state.locating = false;
+    state.locationMessage = '';
     $('near-me-button').disabled = false; $('location-button').disabled = false;
     for (const p of state.plants) p.distance = null;
     for (const key of ['originMarker','accuracyCircle']) { if (state[key]) state.map?.removeLayer(state[key]); state[key] = null; }
@@ -545,7 +546,11 @@
     $('reset-filters').addEventListener('click',() => { for (const id of filterIds) $(`${id}-filter`).value = id === 'evidence' ? 'current' : ''; $('unvisited-filter').checked = false; state.filters = {evidence:'current'}; filterResults(); });
     $('location-button').addEventListener('click',useLocation);
     $('near-me-button').addEventListener('click',useLocation);
-    $('clear-location').addEventListener('click',() => clearNearby());
+    $('clear-location').addEventListener('click',() => {
+      resetAll();
+      const url = new URL(location.href); url.searchParams.delete('city'); window.history?.replaceState(null,'',url);
+      fitResults();
+    });
     $('radius-filter').addEventListener('change',() => { if (!state.origin) return; state.radius=Number($('radius-filter').value); filterResults(); state.map.setView([state.origin.lat,state.origin.lng],state.radius<=5?12:state.radius<=15?11:state.radius<=30?10:9,{animate:false}); $('result-list').scrollTop=0; });
     $('plan-route-button').addEventListener('click',openRoute);
     $('mobile-route-button').addEventListener('click',openRoute);
