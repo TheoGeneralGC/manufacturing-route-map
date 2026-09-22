@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-22T20:44:20.408149+00:00",
+  "generated_at": "2026-09-22T22:54:46.779481+00:00",
   "title": "Manufacturing field atlas",
   "description": "A broad inventory across 39 Central Valley, Bay Area, foothill and Central Coast counties, assembled from bulk regulatory, workplace, licensing and business-directory data. Records are manufacturing candidates, not a certified census of operating plants.",
   "total_records": 31284,
   "mapped_records": 28535,
   "employee_records": 3605,
-  "owner_records": 2392,
+  "owner_records": 2873,
   "contact_records": 15665,
   "county_count": 39,
   "counties": [
@@ -299,12 +299,19 @@
       "url": "https://recallbench.com/data/fsis-establishments.csv",
       "records": 238,
       "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Regional owner and portrait research",
+      "url": "https://manufacturing-route-map.vercel.app/",
+      "records": 848,
+      "retrieved_at": "2026-09-22",
+      "description": "Individual records link to company pages, explicit owner directory titles, filings, interviews, and named portraits. Corporate, family, and individual ownership remain distinct."
     }
   ],
   "limitations": [
     "Regulatory active status does not guarantee that a factory is currently operating; classification can be secondary or historical.",
     "Small unregulated shops can be missing; coverage is not a quantified percentage of all operating plants.",
-    "OSHA figures are employer-reported annual average workers for the stated year, not today\u2019s exact staff count. Data Axle figures may be modeled estimates.",
+    "OSHA figures are employer-reported annual average workers for the stated year, not today’s exact staff count. Data Axle figures may be modeled estimates.",
     "Reported owners can be legal entities; contacts and presidents are not assumed to be individual owners. Contacts may be undated.",
     "Production alcohol licenses include co-located businesses and may include offices or shared production sites.",
     "Data Axle coverage is partial; current search contains 23,461 vendor-classified manufacturing listings. It is not a plant census.",
@@ -319,7 +326,7 @@
   "historical_records": 8263,
   "current_source_mapped": 21987,
   "current_source_employee_records": 3602,
-  "current_source_owner_records": 2392,
+  "current_source_owner_records": 2873,
   "current_source_contact_records": 12920,
   "employee_range_only_records": 766,
   "current_source_employee_range_only_records": 766,
@@ -327,7 +334,7 @@
   "data_axle_enrichment_only_records": 17,
   "osha_enrichment_only_records": 48,
   "classification_excluded_records": 4,
-  "owner_photo_records": 28,
+  "owner_photo_records": 90,
   "tracy_region_review": {
     "retrieved_at": "2026-09-22",
     "region_cities": [
@@ -370,9 +377,9 @@
       "employees_exact": 339,
       "employees_range_only": 664,
       "staff_known": 1003,
-      "owners": 405,
-      "photo_records": 28,
-      "photo_profiles": 34
+      "owners": 886,
+      "photo_records": 90,
+      "photo_profiles": 115
     },
     "cities": [
       {
@@ -395,9 +402,9 @@
           "employees_exact": 5,
           "employees_range_only": 37,
           "staff_known": 42,
-          "owners": 23,
-          "photo_records": 0,
-          "photo_profiles": 0
+          "owners": 34,
+          "photo_records": 4,
+          "photo_profiles": 5
         }
       },
       {
@@ -420,9 +427,9 @@
           "employees_exact": 0,
           "employees_range_only": 4,
           "staff_known": 4,
-          "owners": 0,
-          "photo_records": 0,
-          "photo_profiles": 0
+          "owners": 3,
+          "photo_records": 1,
+          "photo_profiles": 2
         }
       },
       {
@@ -470,7 +477,7 @@
           "employees_exact": 1,
           "employees_range_only": 14,
           "staff_known": 15,
-          "owners": 9,
+          "owners": 20,
           "photo_records": 1,
           "photo_profiles": 3
         }
@@ -495,7 +502,7 @@
           "employees_exact": 3,
           "employees_range_only": 1,
           "staff_known": 4,
-          "owners": 0,
+          "owners": 6,
           "photo_records": 0,
           "photo_profiles": 0
         }
@@ -520,7 +527,7 @@
           "employees_exact": 20,
           "employees_range_only": 25,
           "staff_known": 45,
-          "owners": 13,
+          "owners": 40,
           "photo_records": 1,
           "photo_profiles": 1
         }
@@ -545,9 +552,9 @@
           "employees_exact": 58,
           "employees_range_only": 215,
           "staff_known": 273,
-          "owners": 108,
-          "photo_records": 18,
-          "photo_profiles": 20
+          "owners": 234,
+          "photo_records": 55,
+          "photo_profiles": 71
         }
       },
       {
@@ -570,9 +577,9 @@
           "employees_exact": 17,
           "employees_range_only": 36,
           "staff_known": 53,
-          "owners": 25,
-          "photo_records": 1,
-          "photo_profiles": 1
+          "owners": 53,
+          "photo_records": 5,
+          "photo_profiles": 5
         }
       },
       {
@@ -620,7 +627,7 @@
           "employees_exact": 7,
           "employees_range_only": 23,
           "staff_known": 30,
-          "owners": 11,
+          "owners": 29,
           "photo_records": 1,
           "photo_profiles": 2
         }
@@ -645,9 +652,9 @@
           "employees_exact": 99,
           "employees_range_only": 298,
           "staff_known": 397,
-          "owners": 156,
-          "photo_records": 2,
-          "photo_profiles": 2
+          "owners": 359,
+          "photo_records": 13,
+          "photo_profiles": 14
         }
       },
       {
@@ -670,9 +677,9 @@
           "employees_exact": 128,
           "employees_range_only": 5,
           "staff_known": 133,
-          "owners": 57,
-          "photo_records": 4,
-          "photo_profiles": 5
+          "owners": 103,
+          "photo_records": 9,
+          "photo_profiles": 12
         }
       },
       {
@@ -695,7 +702,7 @@
           "employees_exact": 0,
           "employees_range_only": 1,
           "staff_known": 1,
-          "owners": 0,
+          "owners": 2,
           "photo_records": 0,
           "photo_profiles": 0
         }
@@ -773,6 +780,34 @@
     "OSHA ITA": 2393,
     "Owner / company research": 109,
     "US Census TIGER/Line local geocoding": 407,
-    "USDA FSIS via Recall Bench": 238
+    "USDA FSIS via Recall Bench": 238,
+    "Regional owner and portrait research": 848
+  },
+  "regional_ownership_coverage": {
+    "corporate_owned_businesses": 293,
+    "any_current_owner_businesses": 839,
+    "distinct_named_owner_people": 513,
+    "named_individual_owner_businesses": 494,
+    "family_owned_businesses": 83,
+    "current_person_owner_photo_businesses": 90,
+    "distinct_people_with_current_owner_photos": 102,
+    "employee_owned_businesses": 3,
+    "regional_denominator": 1724,
+    "baseline_rows_with_existing_owner_name": 405,
+    "baseline_owner_type_unknown_businesses": 54,
+    "named_individual_owner_pct": 28.65,
+    "corporate_owned_pct": 17.0,
+    "any_current_owner_pct": 48.67,
+    "current_person_owner_photo_pct_of_named_individual_owner_businesses": 18.22,
+    "distinct_named_owner_photo_pct": 19.88,
+    "baseline_plant_row_count": 31284,
+    "candidate_plant_row_count": 31284,
+    "row_count_preserved": true,
+    "snapshot_date": "2026-09-22",
+    "scope": "Fixed 1,724 current-source location records across Tracy and 12 nearby towns; records are not a deduplicated census of operating businesses.",
+    "ownership_basis": "Publicly reported ownership. Source dates and uncertainty differ; legal shareholding has not been independently certified. Individuals are counted separately from families and corporations.",
+    "photo_basis": "Identified public portrait or captioned group photograph; source date retained where available. Some are archival.",
+    "individual_owner_target_met": false,
+    "owner_photo_target_met": false
   }
 }
