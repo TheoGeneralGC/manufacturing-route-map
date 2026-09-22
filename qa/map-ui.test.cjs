@@ -278,8 +278,13 @@ async function testMobileAndProductionLoading() {
   assert.deepEqual(Array.from(state.filtered,p=>p.id),['near'],'GPS clears Tracy and saved/employee filters, limits to current mapped nearby records.');
   assert.deepEqual(Array.from(state.map.center),[37.33,-121.89]);assert.equal(element('results-panel').hidden,true,'GPS centers the unobscured full-screen map.');
   assert.match(element('location-accuracy').textContent,/±18 m/);
+  assert.equal(element('location-status').textContent,'1 manufacturer within 15 miles of you','Successful GPS shows the nearby result count without opening a panel.');
+  state.filters.employee='250+';filterResults();
+  assert.equal(element('location-status').textContent,'0 manufacturers within 15 miles of you','The nearby count follows active result filters, including zero matches.');
+  state.filters.employee='';filterResults();
   element('radius-filter').value='60';element('radius-filter').listeners.change();
   assert.equal(state.radius,60);assert.equal(state.filtered.length,2,'Widening the radius includes farther current-source plants.');
+  assert.equal(element('location-status').textContent,'2 manufacturers within 60 miles of you','Changing the radius updates both the count and distance label.');
   element('search').value='Tracy';element('search').listeners.input();
   assert.equal(state.origin,null,'A typed destination removes the previous GPS radius restriction.');
   assert.equal(state.radius,null);

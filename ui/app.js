@@ -242,6 +242,9 @@
     $('result-count').textContent = `${format(state.filtered.length)} matching locations`;
     $('result-subtitle').textContent = `${format(mapped)} on map${mapped < state.filtered.length ? ` · ${format(state.filtered.length-mapped)} address only` : ''}${state.radius !== null ? ` · within ${state.radius} mi straight line` : state.inView ? ' · in this area' : ''}`;
     $('mobile-count').textContent = format(state.filtered.length);
+    if (state.origin?.label === 'Your location' && state.radius !== null && state.locationMessage === 'Your location') {
+      $('location-status').textContent = `${format(state.filtered.length)} ${state.filtered.length === 1 ? 'manufacturer' : 'manufacturers'} within ${state.radius} miles of you`;
+    }
     const validNotes = state.plants.map((p) => state.notes[p.id]).filter(Boolean);
     $('saved-count').textContent = format(validNotes.filter((n) => n.saved).length);
     $('visited-count').textContent = format(validNotes.filter((n) => n.visited).length);
@@ -392,6 +395,7 @@
     $('sort').value = 'distance'; filterResults(); if (state.selected) renderDetail();
   }
   function updateLocationStatus(message,accuracy = null) {
+    state.locationMessage = message;
     $('nearby-controls').hidden = false; document.body.classList.add('nearby-active');
     $('location-status').textContent = message;
     $('location-accuracy').textContent = Number.isFinite(accuracy) ? `GPS ±${format(Math.round(accuracy))} m · ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}. Straight-line distances.` : 'Straight-line distances. Plan your stops while parked.';
