@@ -4,9 +4,11 @@ Public map: https://manufacturing-route-map.vercel.app
 
 Mobile map for finding manufacturers by business, city, county or ZIP. Includes current-location centering, employee-size colors, plant details, directions and short route planning. No login or private link is required.
 
-The September 22, 2026 snapshot contains 31,284 manufacturing prospect records across 39 Central Valley and surrounding California counties. Current-source and historical leads are distinguished. Coverage, headcounts, ownership and locations can be incomplete or uncertain; see each record's source details. This is not a complete census of operating plants.
+The September 22, 2026 snapshot contains 31,310 manufacturing prospect records across 39 Central Valley and surrounding California counties. Current-source and historical leads are distinguished. Coverage, headcounts, ownership and locations can be incomplete or uncertain; see each record's source details. This is not a complete census of operating plants.
 
-The Tracy-region update covers 1,724 current-source leads across 13 towns: 1,003 have a reported plant employee count or range, 405 have a reported owner (including corporate owners), and 28 have direct owner-photo links. Tracy itself has 215 current-source leads, 133 with staffing, 57 with an owner, and five identified portrait links across four businesses. Supplemental company-wide counts are displayed separately. Photo links point to the original public sources.
+The Tracy region contains 1,745 current-source location leads across Tracy, Stockton, Livermore, Manteca, Lathrop, Brentwood, Ripon, Escalon, French Camp, Byron, Vernalis, Discovery Bay and Mountain House. Tracy itself has 224 current-source leads. These include both facility evidence and unverified directory leads. Current totals, employee coverage and separately classified owner/portrait coverage are in `data/coverage.json`. Missing information remains blank; photo links point to identified public sources.
+
+The latest expansion added 28 locations (27 in the region plus Tiger Precision's current Lodi site), enriched 28 existing records, merged two same-site duplicates and moved five former manufacturing records to the historical layer. It screened USDA/CDPH processor batches, chambers and industry directories, then checked company production descriptions. Conflicting addresses, phased production starts and uncertain staffing remain labeled in the individual records.
 
 The regional pass reviewed all 930 profiles returned by 344 EDD county/industry searches, then corrected duplicate and non-manufacturing records. It is not independent confirmation of every directory listing. See `data/tracy-region-audit.json` for measured coverage and acquisition checks.
 

@@ -34,15 +34,15 @@
     "photo_profiles": 0
   },
   "after": {
-    "total": 2210,
-    "current": 1724,
-    "mapped": 1485,
-    "employees_exact": 339,
-    "employees_range_only": 664,
-    "staff_known": 1003,
-    "owners": 405,
-    "photo_records": 28,
-    "photo_profiles": 34
+    "total": 2235,
+    "current": 1745,
+    "mapped": 1509,
+    "employees_exact": 338,
+    "employees_range_only": 662,
+    "staff_known": 1000,
+    "owners": 889,
+    "photo_records": 91,
+    "photo_profiles": 117
   },
   "cities": [
     {
@@ -59,15 +59,15 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 86,
-        "current": 63,
-        "mapped": 56,
+        "total": 88,
+        "current": 65,
+        "mapped": 58,
         "employees_exact": 5,
         "employees_range_only": 37,
         "staff_known": 42,
-        "owners": 23,
-        "photo_records": 0,
-        "photo_profiles": 0
+        "owners": 35,
+        "photo_records": 4,
+        "photo_profiles": 5
       }
     },
     {
@@ -86,13 +86,13 @@
       "after": {
         "total": 14,
         "current": 10,
-        "mapped": 6,
+        "mapped": 7,
         "employees_exact": 0,
         "employees_range_only": 4,
         "staff_known": 4,
-        "owners": 0,
-        "photo_records": 0,
-        "photo_profiles": 0
+        "owners": 3,
+        "photo_records": 1,
+        "photo_profiles": 2
       }
     },
     {
@@ -134,13 +134,13 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 43,
-        "current": 33,
-        "mapped": 27,
+        "total": 44,
+        "current": 34,
+        "mapped": 28,
         "employees_exact": 1,
         "employees_range_only": 14,
         "staff_known": 15,
-        "owners": 9,
+        "owners": 21,
         "photo_records": 1,
         "photo_profiles": 3
       }
@@ -165,7 +165,7 @@
         "employees_exact": 3,
         "employees_range_only": 1,
         "staff_known": 4,
-        "owners": 0,
+        "owners": 6,
         "photo_records": 0,
         "photo_profiles": 0
       }
@@ -184,13 +184,13 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 100,
-        "current": 78,
-        "mapped": 65,
+        "total": 101,
+        "current": 79,
+        "mapped": 66,
         "employees_exact": 20,
         "employees_range_only": 25,
         "staff_known": 45,
-        "owners": 13,
+        "owners": 40,
         "photo_records": 1,
         "photo_profiles": 1
       }
@@ -209,15 +209,15 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 555,
-        "current": 470,
-        "mapped": 437,
+        "total": 559,
+        "current": 471,
+        "mapped": 438,
         "employees_exact": 58,
-        "employees_range_only": 215,
-        "staff_known": 273,
-        "owners": 108,
-        "photo_records": 18,
-        "photo_profiles": 20
+        "employees_range_only": 214,
+        "staff_known": 272,
+        "owners": 234,
+        "photo_records": 55,
+        "photo_profiles": 71
       }
     },
     {
@@ -234,15 +234,15 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 117,
-        "current": 90,
-        "mapped": 70,
-        "employees_exact": 17,
-        "employees_range_only": 36,
-        "staff_known": 53,
-        "owners": 25,
-        "photo_records": 1,
-        "photo_profiles": 1
+        "total": 118,
+        "current": 89,
+        "mapped": 69,
+        "employees_exact": 16,
+        "employees_range_only": 34,
+        "staff_known": 50,
+        "owners": 51,
+        "photo_records": 5,
+        "photo_profiles": 5
       }
     },
     {
@@ -284,13 +284,13 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 60,
-        "current": 48,
-        "mapped": 41,
+        "total": 61,
+        "current": 49,
+        "mapped": 42,
         "employees_exact": 7,
-        "employees_range_only": 23,
-        "staff_known": 30,
-        "owners": 11,
+        "employees_range_only": 24,
+        "staff_known": 31,
+        "owners": 29,
         "photo_records": 1,
         "photo_profiles": 2
       }
@@ -309,15 +309,15 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 916,
-        "current": 679,
-        "mapped": 572,
+        "total": 923,
+        "current": 686,
+        "mapped": 581,
         "employees_exact": 99,
-        "employees_range_only": 298,
-        "staff_known": 397,
-        "owners": 156,
-        "photo_records": 2,
-        "photo_profiles": 2
+        "employees_range_only": 297,
+        "staff_known": 396,
+        "owners": 360,
+        "photo_records": 14,
+        "photo_profiles": 16
       }
     },
     {
@@ -334,15 +334,15 @@
         "photo_profiles": 0
       },
       "after": {
-        "total": 267,
-        "current": 215,
-        "mapped": 180,
+        "total": 275,
+        "current": 224,
+        "mapped": 189,
         "employees_exact": 128,
-        "employees_range_only": 5,
-        "staff_known": 133,
-        "owners": 57,
-        "photo_records": 4,
-        "photo_profiles": 5
+        "employees_range_only": 6,
+        "staff_known": 134,
+        "owners": 105,
+        "photo_records": 9,
+        "photo_profiles": 12
       }
     },
     {
@@ -365,7 +365,7 @@
         "employees_exact": 0,
         "employees_range_only": 1,
         "staff_known": 1,
-        "owners": 0,
+        "owners": 2,
         "photo_records": 0,
         "photo_profiles": 0
       }
@@ -399,5 +399,55 @@
     "post_review_merge_groups": 34,
     "post_review_merged_rows": 42,
     "owner_research_records": 71
+  },
+  "latest_expansion": {
+    "generated_at": "2026-09-22T23:52:32.279062+00:00",
+    "baseline_records": 31284,
+    "final_records": 31310,
+    "sha256": "0b96c9188885ef9485490dbc5e16a319b4410b0d40422382b1c85af9a9af25d8",
+    "regional_before": {
+      "total": 2210,
+      "current": 1724,
+      "mapped": 1485,
+      "employees_exact": 339,
+      "employees_range_only": 664,
+      "staff_known": 1003,
+      "owners": 886,
+      "photo_records": 90,
+      "photo_profiles": 115
+    },
+    "regional_after": {
+      "total": 2235,
+      "current": 1745,
+      "mapped": 1509,
+      "employees_exact": 338,
+      "employees_range_only": 662,
+      "staff_known": 1000,
+      "owners": 889,
+      "photo_records": 91,
+      "photo_profiles": 117
+    },
+    "new_records_mapped": 28,
+    "added": 28,
+    "enriched": 28,
+    "duplicate_rows_merged": 2,
+    "historical_corrections": 5,
+    "address_corrections": 1,
+    "towns": [
+      "Brentwood",
+      "Byron",
+      "Discovery Bay",
+      "Escalon",
+      "French Camp",
+      "Lathrop",
+      "Livermore",
+      "Manteca",
+      "Mountain House",
+      "Ripon",
+      "Stockton",
+      "Tracy",
+      "Vernalis"
+    ],
+    "methodology": "Directory and certification batch screening followed by company-level production verification. Not an exhaustive census. Current-source records include unverified directory leads."
   }
 }

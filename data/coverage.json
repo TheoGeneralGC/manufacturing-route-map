@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-09-22T22:54:46.779481+00:00",
+  "generated_at": "2026-09-22T23:52:32.279062+00:00",
   "title": "Manufacturing field atlas",
   "description": "A broad inventory across 39 Central Valley, Bay Area, foothill and Central Coast counties, assembled from bulk regulatory, workplace, licensing and business-directory data. Records are manufacturing candidates, not a certified census of operating plants.",
-  "total_records": 31284,
-  "mapped_records": 28535,
-  "employee_records": 3605,
-  "owner_records": 2873,
-  "contact_records": 15665,
+  "total_records": 31310,
+  "mapped_records": 28564,
+  "employee_records": 3604,
+  "owner_records": 2880,
+  "contact_records": 15669,
   "county_count": 39,
   "counties": [
     {
       "name": "Alameda",
-      "count": 3989
+      "count": 3993
     },
     {
       "name": "Amador",
@@ -31,7 +31,7 @@
     },
     {
       "name": "Contra Costa",
-      "count": 1152
+      "count": 1154
     },
     {
       "name": "El Dorado",
@@ -107,7 +107,7 @@
     },
     {
       "name": "San Joaquin",
-      "count": 1952
+      "count": 1972
     },
     {
       "name": "San Luis Obispo",
@@ -169,6 +169,12 @@
   "merged_overlap_records": 5902,
   "sources": [
     {
+      "name": "A & A Dasso official operations",
+      "url": "https://www.dassofarms.com/job-board",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "ARMS Pumps & Repairs USA",
       "url": "https://www.armspumps.net/pages/services.html",
       "records": 1,
@@ -181,9 +187,105 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "Advantage Metal official manufacturing services",
+      "url": "https://advantagemetal.com/services/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Altamont official manufacturing facility website",
+      "url": "https://www.altamontmfg.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "American River Ag official facilities",
+      "url": "https://www.americanriverag.com/services88c66be6",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "BBB — West Coast Cryogenics",
+      "url": "https://www.bbb.org/us/ca/tracy/profile/plumber/west-coast-cryogenics-inc-1156-90077178",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "BMF official about",
+      "url": "https://bmfabrication.com/about",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "BMF official services",
+      "url": "https://bmfabrication.com/services",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "BR Graphics official production services",
+      "url": "https://www.brgraphics.com/small-large-format-printing/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "BR Graphics official team and ownership",
+      "url": "https://www.brgraphics.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Brentwood Chamber member directory",
+      "url": "https://business.brentwoodchamber.com/members/member/br-graphics-15259",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CA DIR — pressure vessel registration database",
+      "url": "https://www.dir.ca.gov/databases/dosh-pv/DOSH-PV.ASP?City=&County=&PERM_EXP_D=&RP_Name=oor&State_nbr=&Street_1=&ZIP5=&sortfield=Name",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "CA EDD / Data Axle employer directory",
       "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?menuChoice=emp&empid=432812235&geogArea=0604000001",
       "records": 865,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CA EDD / Data Axle — Norcal Welding",
+      "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?empid=436762805&geogArea=0604000077&menuChoice=emp",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CCOF processor directory",
+      "url": "https://ccof.org/directory-member/california-quality-nut-llc/",
+      "records": 3,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CMYK official contact",
+      "url": "https://www.cmykpnt.com/contact",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CMYK official production capabilities",
+      "url": "https://www.cmykpnt.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Cal Plastics & Signs official contact",
+      "url": "https://calplasticsandsigns.com/contact-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Cal Plastics & Signs official site",
+      "url": "https://calplasticsandsigns.com/",
+      "records": 1,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -193,9 +295,81 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "California DIR pressure-vessel database",
+      "url": "https://www.dir.ca.gov/databases/dosh-pv/DOSH-PV.ASP?RP_Name=eco&sortfield=Name",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California DIR pressure-vessel registry",
+      "url": "https://www.dir.ca.gov/databases/dosh-pv/DOSH-PV.ASP?City=&County=&PERM_EXP_D=&RP_Name=glo&State_nbr=&Street_1=&ZIP5=&sortfield=Name",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California EDD employer profile",
+      "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?empid=637395823&geogArea=0604000001&menuChoice=emp",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "California SMARTS",
       "url": "https://data.ca.gov/dataset/stormwater-regulatory-including-enforcement-actions-information-and-water-quality-results",
       "records": 3689,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California Walnut Board handler directory",
+      "url": "https://californiawalnuts.ca/retail/handler-list/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California filing mirror — Chassis Unlimited",
+      "url": "https://www.bizprofile.net/ca/tracy/chassis-unlimited-inc",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Capdex report of Colliers lease announcement",
+      "url": "https://capdex.com/news/velo3d-signs-558-million-lease-at-omp-oaks-business-park",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Chassis Unlimited — About",
+      "url": "https://chassisunlimited.com/pages/about",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Chassis Unlimited — Contact",
+      "url": "https://chassisunlimited.com/pages/contact-us",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Chassis Unlimited — contact",
+      "url": "https://chassisunlimited.com/pages/contact-us",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Chassis Unlimited — factory",
+      "url": "https://chassisunlimited.com/pages/about",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Chicago Section IFT supplier directory",
+      "url": "https://www.chicagoift.org/SuppliersDay/2025-Exhibitor-Listing/Images/buyers_guide/2024-csift-buyers-guide-web.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "City of Stockton July 2025 business licenses",
+      "url": "https://cms3.revize.com/revize/stockton/Documents/Business/Business%20Licenses/New%20Business%20Licenses%20July%202025%20web.pdf",
+      "records": 1,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -229,9 +403,57 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "Cortera location directory",
+      "url": "https://start.cortera.com/company/research/n2j7msj2m/world-food-products-inc/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Culinary Stainless Fabricators — About",
+      "url": "https://culinarystainlessfabricators.com/about.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Culinary Stainless Fabricators — Fabrication",
+      "url": "https://culinarystainlessfabricators.com/fabrication.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "D&B BMF - BakTek profile",
+      "url": "https://www.dnb.com/business-directory/company-profiles.bmf_-_baktek_metal_fabrication.1b72d97da94440fc90cd8a9e7abfc68b.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "D&B — California Cooking DBA Culinary Stainless Fabricators",
+      "url": "https://www.dnb.com/business-directory/company-profiles.california_cooking_inc.3fe73031e3077196071aa9f056e75b35.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "Data Axle Reference Solutions",
       "url": "https://www.referenceusa.com/",
       "records": 1444,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Delta A/C Supply official site",
+      "url": "https://deltaac.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Dutchman Doors — official company story",
+      "url": "https://dutchmandoors.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "E-M Manufacturing official site",
+      "url": "https://www.emmanufacturing.com/",
+      "records": 1,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -241,9 +463,21 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "EPA ECHO / FRS — existing facility address",
+      "url": "https://echo.epa.gov/detailed-facility-report?fid=110071318288",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "EPA FRS",
       "url": "https://ofmpub.epa.gov/frs_public2/fii_query_detail.disp_program_facility?p_registry_id=110066589873",
       "records": 11347,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Eastman Digital official facility and services",
+      "url": "https://eastmandigital.com/",
+      "records": 1,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -253,14 +487,152 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "Feral Productions — Company history",
+      "url": "https://feralprodinc.com/about/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Feral Productions — Contact",
+      "url": "https://feralprodinc.com/contact/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Feral Productions — Services and manufacturing",
+      "url": "https://feralprodinc.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Fremont Cabinet Shop official site",
+      "url": "https://www.fremontcabinetshop.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "GC Machining official About Us",
+      "url": "https://gc-machining.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "GC Machining official site",
+      "url": "https://gc-machining.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Gallien-Krueger official FAQ",
+      "url": "https://www.gallien-krueger.com/faqs",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Gallien-Krueger official contact",
+      "url": "https://www.gallien-krueger.com/contact",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Gallien-Krueger official speaker products",
+      "url": "https://www.gallien-krueger.com/speakers-2",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "Glassfab Tempering Services",
       "url": "https://www.glassfabusa.com/about/",
       "records": 3,
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "GloriAnn Farms official facilities",
+      "url": "https://gloriannfarms.com/contact-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "GloriAnn Farms official products and production",
+      "url": "https://gloriannfarms.com/retail/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Greater Stockton Chamber member profile",
+      "url": "https://cm.stocktonchamber.org/list/member/vander-bend-manufacturing-5069915",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Halfab official machine shop",
+      "url": "https://www.halfab.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Haydon Stockton manufacturing announcement",
+      "url": "https://haydoncorp.com/news/haydon-corporation-completes-ul-certified-environmental-product-declarations-for-six-core-h-strut-profiles-manufactured-in-stockton-ca?newsId=52",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Haydon company LinkedIn locations",
+      "url": "https://www.linkedin.com/company/haydon-corporation-inc.",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Haydon official plant locations",
+      "url": "https://haydoncorp.com/plant-locations",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Haydon official technical data",
+      "url": "https://haydoncorp.com/technical-data",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "JH Motorsports official Careers page",
+      "url": "https://jhmotorsports.com/careers",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "JH Motorsports official conditions",
+      "url": "https://jhmotorsports.com/conditions",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Jabil global entities directory — conflicting address",
+      "url": "https://www.jabil.com/about-us/global-locations/list-of-global-entities.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Kinetic Molding official facility website",
+      "url": "https://www.kineticmolding.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "Leprino Foods official careers",
       "url": "https://careers.leprino.com/job/Tracy-Plant-Maintenance-Supervisor-CA-95376/1333711000/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Livermore Vine headquarters vacancy report",
+      "url": "https://www.livermorevine.com/business/2026/03/23/monarch-tractor-exits-hq-in-livermore-amid-legal-turmoil/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "LoopNet industrial property listing",
+      "url": "https://www.loopnet.com/Listing/711-Challenger-St-Livermore-CA/30217537/",
       "records": 1,
       "retrieved_at": "2026-09-22"
     },
@@ -271,8 +643,104 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "MANTECH Livermore Laboratory",
+      "url": "https://www.mantech.com/mantech-livermore-labs/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "MANTECH official Livermore Laboratory factsheet",
+      "url": "https://www.mantech.com/wp-content/uploads/2025/03/Livermore-Laboratory-Fact-Sheet.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Manteca Bulletin facility conversion report",
+      "url": "https://www.mantecabulletin.com/news/local-news/manteca-unified-board-oks-15m-remodel-for-nutritional-education/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Manteca Chamber member profile",
+      "url": "https://manteca.org/member/reliance-dental-designs/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Manteca Unified acquisition CEQA notice",
+      "url": "https://files.ceqanet.lci.ca.gov/309656-1/attachment/Ppvhv9lujV12CBnHw6sqIc_3cyFe3Es5uy6g2tGChEXH5xVz40SBYVa92WulNnmmFZL2IhAq3GJPqAOr0",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Marin Foods — Official company and services",
+      "url": "https://www.marinfoods.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Merlin Graphics C&C Design — official production description",
+      "url": "https://www.candcdesign.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Merlin Graphics — official contact",
+      "url": "https://www.candcdesign.com/contact",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Monarch Tractor company statement",
+      "url": "https://www.linkedin.com/company/monarch-tractor",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Monarch completed equipment auction",
+      "url": "https://svdisposition.com/auction-detail/810",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Morrill Industries official contact",
+      "url": "https://www.morrillinc.com/contact-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Morrill Industries official products",
+      "url": "https://www.morrillinc.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Motor Guard official About Us",
+      "url": "https://motorguard.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Motor Guard official contact",
+      "url": "https://motorguard.com/contact/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "NC Routing Services official shop page",
+      "url": "https://www.ncrouting.com/body-main3.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "NSF manufacturing facility listings",
       "url": "https://info.nsf.org/Certified/455GMP/Listings.asp?Company=C0865724&Standard=455-2GMP",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "NorCal Welding — official shop capabilities and address",
+      "url": "https://www.norcalwelding.com/",
       "records": 1,
       "retrieved_at": "2026-09-22"
     },
@@ -283,15 +751,225 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "OSHA — Hand Crafted Dutchman Doors inspection",
+      "url": "https://www.osha.gov/ords/imis/establishment.inspection_detail?id=1183667.015",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Open Governance local report",
+      "url": "https://opgov.news/articles/beyond-wine-and-the-lab-livermore-is-printing-an-industrial-future",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Orozco Foam Molding official site",
+      "url": "https://orozcofoammolding.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "Owner / company research",
       "url": "https://www.livermorevine.com/blogs/tri-valley-foodist/2025/10/17/altamont-beer-works-brews-up-maui-waui-and-more/",
-      "records": 109,
+      "records": 68,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Precision Cabinets official plant and process",
+      "url": "https://www.precisioncabinets.com/why-precision-2",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Pro-Tek official shop website",
+      "url": "https://protekmfg.squarespace.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Produce News interview",
+      "url": "https://theproducenews.com/nuts-dried-fruit/grandmas-refrigerator-held-key-sunrise-freshs-success",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Public address coordinate verification",
+      "url": "https://echo.epa.gov/detailed-facility-report?fid=110070416504",
+      "records": 19,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Quicksilver Audio company history",
+      "url": "https://quicksilveraudio.com/company-history/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Quicksilver Audio headphone amplifier manual",
+      "url": "https://quicksilveraudio.com/wp-content/uploads/2022/08/HeadphoneManual.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Quicksilver Audio official contact",
+      "url": "https://quicksilveraudio.com/contact/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Quicksilver Audio official site",
+      "url": "https://quicksilveraudio.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Reliance Dental Designs official site",
+      "url": "https://reliancedentaldesigns.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Reliance Dental Designs official team",
+      "url": "https://reliancedentaldesigns.com/team/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Revolution Packaging — About",
+      "url": "https://www.revolutionpackaginginc.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Revolution Packaging — Contact",
+      "url": "https://www.revolutionpackaginginc.com/contact-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Roche Brothers International official company page",
+      "url": "https://rochebrothersinc.com/international",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Roche Brothers official facility",
+      "url": "https://rochebrothersinc.com/rbi",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "San Joaquin Valley Air District 2023 annual report",
+      "url": "https://www.valleyair.org/media/okihp5dy/2023-annual-report.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Seclay CNC official site",
+      "url": "https://seclay.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Semicore official contact",
+      "url": "https://www.semicore.com/contact-us",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Semicore official manufacturing brochure",
+      "url": "https://www.semicore.com/sputtering-system/semicores-customer-centered-approach-to-pvd-solutions.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Shared-building coordinate cross-check (Alfa Woodworks permit)",
+      "url": "https://data.ca.gov/dataset/stormwater-regulatory-including-enforcement-actions-information-and-water-quality-results",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Silicon Valley Precision current ISO certificate",
+      "url": "https://www.siliconvalleyprecision.com/wp-content/uploads/Silicon-Valley-Precision-ISO-9001-Certification-2025.pdf",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Silicon Valley Precision official facility description",
+      "url": "https://www.siliconvalleyprecision.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Simple Machining official about and facility",
+      "url": "https://www.simplemachining.com/about",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Specialty Precision Machining official About Us",
+      "url": "https://specialtyprecisionmachining.com/about-us.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Stockton Chamber 2026 Industrial Technology Barbecue",
+      "url": "https://stocktonchamber.org/app/industrial-technology-barbecue/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Sunrise Fresh official contact page",
+      "url": "https://sunrisefresh.com/pages/contact",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Sunrise Fresh official team portraits",
+      "url": "https://sunrisefresh.com/pages/meet-the-team",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "TECO official current contact",
+      "url": "https://tecotechnology.com/pages/contact-us",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "TECO official relocation announcement",
+      "url": "https://tecotechnology.com/blogs/news/teco-hq-has-moved",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "TECO official services",
+      "url": "https://tecotechnology.com/pages/services",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "TORXUN official About page",
+      "url": "https://www.torxun.com/about-torxun",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Thermal Press official CNC manufacturing facility",
+      "url": "https://thermalpress.com/cnc-machining/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Tiger Precision Machining official site",
+      "url": "https://tigerprecisionmach.com/",
+      "records": 1,
       "retrieved_at": "2026-09-22"
     },
     {
       "name": "US Census TIGER/Line local geocoding",
       "url": "https://www2.census.gov/geo/tiger/TIGER2025/ADDRFEAT/tl_2025_06001_addrfeat.zip",
-      "records": 407,
+      "records": 429,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -301,11 +979,82 @@
       "retrieved_at": "2026-09-22"
     },
     {
-      "name": "Regional owner and portrait research",
-      "url": "https://manufacturing-route-map.vercel.app/",
-      "records": 848,
-      "retrieved_at": "2026-09-22",
-      "description": "Individual records link to company pages, explicit owner directory titles, filings, interviews, and named portraits. Corporate, family, and individual ownership remain distinct."
+      "name": "USDA Organic Integrity Database",
+      "url": "https://organic.ams.usda.gov/integrity/",
+      "records": 6,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Uni-Fab — Our Story",
+      "url": "https://uni-fab.com/our-story/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Valley Custom Powder Coating official site",
+      "url": "https://www.valleycustompowdercoating.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Vander-Bend official capabilities",
+      "url": "https://vander-bend.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Velo3D official opening announcement",
+      "url": "https://ir.velo3d.com/news-events/press-releases/detail/213/velo3d-opens-livermore-production-campus-forge-1-one-of",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Wall to Wall Cabinets and Trim official site",
+      "url": "https://walltowallcabinetsandtrim.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "West Coast Cryogenics — About",
+      "url": "https://westcoastcryo.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "West Coast Cryogenics — Careers",
+      "url": "https://westcoastcryo.com/careers/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "West Coast Cryogenics — Fabrication shop capabilities",
+      "url": "https://westcoastcryo.com/service/cryogenic-food-equipment-services/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Williams Manufacturing — General Metal Fabrication",
+      "url": "https://williamsmfgtracy.com/general-metal-fabrication/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Williams Manufacturing — Home",
+      "url": "https://williamsmfgtracy.com/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "World Food Products official address",
+      "url": "https://worldfoodproducts.com/pixfooter-item/main-footer/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "World Food Products official facility description",
+      "url": "https://worldfoodproducts.com/about-world-food-products/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
     }
   ],
   "limitations": [
@@ -322,19 +1071,19 @@
     "Owner portraits are links to public, explicitly labeled source photos. No photograph is inferred from a face or synthesized. Missing portraits remain unavailable. Ownership and personnel can change after the cited source date.",
     "Supplemental company-wide staffing stays separate from plant headcounts and does not determine pin colors."
   ],
-  "current_source_records": 23021,
-  "historical_records": 8263,
-  "current_source_mapped": 21987,
-  "current_source_employee_records": 3602,
-  "current_source_owner_records": 2873,
+  "current_source_records": 23043,
+  "historical_records": 8267,
+  "current_source_mapped": 22012,
+  "current_source_employee_records": 3601,
+  "current_source_owner_records": 2877,
   "current_source_contact_records": 12920,
-  "employee_range_only_records": 766,
-  "current_source_employee_range_only_records": 766,
-  "current_source_employee_known_records": 4368,
+  "employee_range_only_records": 767,
+  "current_source_employee_range_only_records": 764,
+  "current_source_employee_known_records": 4365,
   "data_axle_enrichment_only_records": 17,
   "osha_enrichment_only_records": 48,
   "classification_excluded_records": 4,
-  "owner_photo_records": 90,
+  "owner_photo_records": 91,
   "tracy_region_review": {
     "retrieved_at": "2026-09-22",
     "region_cities": [
@@ -371,15 +1120,15 @@
       "photo_profiles": 0
     },
     "after": {
-      "total": 2210,
-      "current": 1724,
-      "mapped": 1485,
-      "employees_exact": 339,
-      "employees_range_only": 664,
-      "staff_known": 1003,
-      "owners": 886,
-      "photo_records": 90,
-      "photo_profiles": 115
+      "total": 2235,
+      "current": 1745,
+      "mapped": 1509,
+      "employees_exact": 338,
+      "employees_range_only": 662,
+      "staff_known": 1000,
+      "owners": 889,
+      "photo_records": 91,
+      "photo_profiles": 117
     },
     "cities": [
       {
@@ -396,13 +1145,13 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 86,
-          "current": 63,
-          "mapped": 56,
+          "total": 88,
+          "current": 65,
+          "mapped": 58,
           "employees_exact": 5,
           "employees_range_only": 37,
           "staff_known": 42,
-          "owners": 34,
+          "owners": 35,
           "photo_records": 4,
           "photo_profiles": 5
         }
@@ -423,7 +1172,7 @@
         "after": {
           "total": 14,
           "current": 10,
-          "mapped": 6,
+          "mapped": 7,
           "employees_exact": 0,
           "employees_range_only": 4,
           "staff_known": 4,
@@ -471,13 +1220,13 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 43,
-          "current": 33,
-          "mapped": 27,
+          "total": 44,
+          "current": 34,
+          "mapped": 28,
           "employees_exact": 1,
           "employees_range_only": 14,
           "staff_known": 15,
-          "owners": 20,
+          "owners": 21,
           "photo_records": 1,
           "photo_profiles": 3
         }
@@ -521,9 +1270,9 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 100,
-          "current": 78,
-          "mapped": 65,
+          "total": 101,
+          "current": 79,
+          "mapped": 66,
           "employees_exact": 20,
           "employees_range_only": 25,
           "staff_known": 45,
@@ -546,12 +1295,12 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 555,
-          "current": 470,
-          "mapped": 437,
+          "total": 559,
+          "current": 471,
+          "mapped": 438,
           "employees_exact": 58,
-          "employees_range_only": 215,
-          "staff_known": 273,
+          "employees_range_only": 214,
+          "staff_known": 272,
           "owners": 234,
           "photo_records": 55,
           "photo_profiles": 71
@@ -571,13 +1320,13 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 117,
-          "current": 90,
-          "mapped": 70,
-          "employees_exact": 17,
-          "employees_range_only": 36,
-          "staff_known": 53,
-          "owners": 53,
+          "total": 118,
+          "current": 89,
+          "mapped": 69,
+          "employees_exact": 16,
+          "employees_range_only": 34,
+          "staff_known": 50,
+          "owners": 51,
           "photo_records": 5,
           "photo_profiles": 5
         }
@@ -621,12 +1370,12 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 60,
-          "current": 48,
-          "mapped": 41,
+          "total": 61,
+          "current": 49,
+          "mapped": 42,
           "employees_exact": 7,
-          "employees_range_only": 23,
-          "staff_known": 30,
+          "employees_range_only": 24,
+          "staff_known": 31,
           "owners": 29,
           "photo_records": 1,
           "photo_profiles": 2
@@ -646,15 +1395,15 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 916,
-          "current": 679,
-          "mapped": 572,
+          "total": 923,
+          "current": 686,
+          "mapped": 581,
           "employees_exact": 99,
-          "employees_range_only": 298,
-          "staff_known": 397,
-          "owners": 359,
-          "photo_records": 13,
-          "photo_profiles": 14
+          "employees_range_only": 297,
+          "staff_known": 396,
+          "owners": 360,
+          "photo_records": 14,
+          "photo_profiles": 16
         }
       },
       {
@@ -671,13 +1420,13 @@
           "photo_profiles": 0
         },
         "after": {
-          "total": 267,
-          "current": 215,
-          "mapped": 180,
+          "total": 275,
+          "current": 224,
+          "mapped": 189,
           "employees_exact": 128,
-          "employees_range_only": 5,
-          "staff_known": 133,
-          "owners": 103,
+          "employees_range_only": 6,
+          "staff_known": 134,
+          "owners": 105,
           "photo_records": 9,
           "photo_profiles": 12
         }
@@ -736,6 +1485,56 @@
       "post_review_merge_groups": 34,
       "post_review_merged_rows": 42,
       "owner_research_records": 71
+    },
+    "latest_expansion": {
+      "generated_at": "2026-09-22T23:52:32.279062+00:00",
+      "baseline_records": 31284,
+      "final_records": 31310,
+      "sha256": "0b96c9188885ef9485490dbc5e16a319b4410b0d40422382b1c85af9a9af25d8",
+      "regional_before": {
+        "total": 2210,
+        "current": 1724,
+        "mapped": 1485,
+        "employees_exact": 339,
+        "employees_range_only": 664,
+        "staff_known": 1003,
+        "owners": 886,
+        "photo_records": 90,
+        "photo_profiles": 115
+      },
+      "regional_after": {
+        "total": 2235,
+        "current": 1745,
+        "mapped": 1509,
+        "employees_exact": 338,
+        "employees_range_only": 662,
+        "staff_known": 1000,
+        "owners": 889,
+        "photo_records": 91,
+        "photo_profiles": 117
+      },
+      "new_records_mapped": 28,
+      "added": 28,
+      "enriched": 28,
+      "duplicate_rows_merged": 2,
+      "historical_corrections": 5,
+      "address_corrections": 1,
+      "towns": [
+        "Brentwood",
+        "Byron",
+        "Discovery Bay",
+        "Escalon",
+        "French Camp",
+        "Lathrop",
+        "Livermore",
+        "Manteca",
+        "Mountain House",
+        "Ripon",
+        "Stockton",
+        "Tracy",
+        "Vernalis"
+      ],
+      "methodology": "Directory and certification batch screening followed by company-level production verification. Not an exhaustive census. Current-source records include unverified directory leads."
     }
   },
   "baseline_source_counts_before_merge": {
@@ -759,55 +1558,226 @@
     "USDA FSIS via Recall Bench": 238
   },
   "source_evidence_counts": {
+    "A & A Dasso official operations": 1,
     "ARMS Pumps & Repairs USA": 1,
     "ARMS Pumps & Repairs official website": 1,
+    "Advantage Metal official manufacturing services": 1,
+    "Altamont official manufacturing facility website": 1,
+    "American River Ag official facilities": 1,
+    "BBB — West Coast Cryogenics": 1,
+    "BMF official about": 1,
+    "BMF official services": 1,
+    "BR Graphics official production services": 1,
+    "BR Graphics official team and ownership": 1,
+    "Brentwood Chamber member directory": 1,
+    "CA DIR — pressure vessel registration database": 1,
     "CA EDD / Data Axle employer directory": 865,
+    "CA EDD / Data Axle — Norcal Welding": 1,
+    "CCOF processor directory": 3,
+    "CMYK official contact": 1,
+    "CMYK official production capabilities": 1,
+    "Cal Plastics & Signs official contact": 1,
+    "Cal Plastics & Signs official site": 1,
     "California ABC": 5781,
+    "California DIR pressure-vessel database": 1,
+    "California DIR pressure-vessel registry": 1,
+    "California EDD employer profile": 1,
     "California SMARTS": 3689,
+    "California Walnut Board handler directory": 1,
+    "California filing mirror — Chassis Unlimited": 1,
+    "Capdex report of Colliers lease announcement": 1,
+    "Chassis Unlimited — About": 1,
+    "Chassis Unlimited — Contact": 1,
+    "Chassis Unlimited — contact": 1,
+    "Chassis Unlimited — factory": 1,
+    "Chicago Section IFT supplier directory": 1,
+    "City of Stockton July 2025 business licenses": 1,
     "City of Tracy Economic Development": 2,
     "City of Tracy business license listings": 3,
     "Company / public-record verification": 19,
     "Company contact verification": 2,
     "Company staffing statement": 1,
+    "Cortera location directory": 1,
+    "Culinary Stainless Fabricators — About": 1,
+    "Culinary Stainless Fabricators — Fabrication": 1,
+    "D&B BMF - BakTek profile": 1,
+    "D&B — California Cooking DBA Culinary Stainless Fabricators": 1,
     "Data Axle Reference Solutions": 1444,
+    "Delta A/C Supply official site": 1,
+    "Dutchman Doors — official company story": 1,
+    "E-M Manufacturing official site": 1,
     "EPA ECHO / FRS": 13093,
+    "EPA ECHO / FRS — existing facility address": 1,
     "EPA FRS": 11347,
+    "Eastman Digital official facility and services": 1,
     "FDA Device Registration": 454,
+    "Feral Productions — Company history": 1,
+    "Feral Productions — Contact": 1,
+    "Feral Productions — Services and manufacturing": 1,
+    "Fremont Cabinet Shop official site": 1,
+    "GC Machining official About Us": 1,
+    "GC Machining official site": 1,
+    "Gallien-Krueger official FAQ": 1,
+    "Gallien-Krueger official contact": 1,
+    "Gallien-Krueger official speaker products": 1,
     "Glassfab Tempering Services": 3,
+    "GloriAnn Farms official facilities": 1,
+    "GloriAnn Farms official products and production": 1,
+    "Greater Stockton Chamber member profile": 1,
+    "Halfab official machine shop": 1,
+    "Haydon Stockton manufacturing announcement": 1,
+    "Haydon company LinkedIn locations": 1,
+    "Haydon official plant locations": 1,
+    "Haydon official technical data": 1,
+    "JH Motorsports official Careers page": 1,
+    "JH Motorsports official conditions": 1,
+    "Jabil global entities directory — conflicting address": 1,
+    "Kinetic Molding official facility website": 1,
     "Leprino Foods official careers": 1,
+    "Livermore Vine headquarters vacancy report": 1,
+    "LoopNet industrial property listing": 1,
     "M-FIND v1.1": 3,
+    "MANTECH Livermore Laboratory": 1,
+    "MANTECH official Livermore Laboratory factsheet": 1,
+    "Manteca Bulletin facility conversion report": 1,
+    "Manteca Chamber member profile": 1,
+    "Manteca Unified acquisition CEQA notice": 1,
+    "Marin Foods — Official company and services": 1,
+    "Merlin Graphics C&C Design — official production description": 1,
+    "Merlin Graphics — official contact": 1,
+    "Monarch Tractor company statement": 1,
+    "Monarch completed equipment auction": 1,
+    "Morrill Industries official contact": 1,
+    "Morrill Industries official products": 1,
+    "Motor Guard official About Us": 1,
+    "Motor Guard official contact": 1,
+    "NC Routing Services official shop page": 1,
     "NSF manufacturing facility listings": 1,
+    "NorCal Welding — official shop capabilities and address": 1,
     "OSHA ITA": 2393,
-    "Owner / company research": 109,
-    "US Census TIGER/Line local geocoding": 407,
+    "OSHA — Hand Crafted Dutchman Doors inspection": 1,
+    "Open Governance local report": 1,
+    "Orozco Foam Molding official site": 1,
+    "Owner / company research": 68,
+    "Precision Cabinets official plant and process": 1,
+    "Pro-Tek official shop website": 1,
+    "Produce News interview": 1,
+    "Public address coordinate verification": 19,
+    "Quicksilver Audio company history": 1,
+    "Quicksilver Audio headphone amplifier manual": 1,
+    "Quicksilver Audio official contact": 1,
+    "Quicksilver Audio official site": 1,
+    "Reliance Dental Designs official site": 1,
+    "Reliance Dental Designs official team": 1,
+    "Revolution Packaging — About": 1,
+    "Revolution Packaging — Contact": 1,
+    "Roche Brothers International official company page": 1,
+    "Roche Brothers official facility": 1,
+    "San Joaquin Valley Air District 2023 annual report": 1,
+    "Seclay CNC official site": 1,
+    "Semicore official contact": 1,
+    "Semicore official manufacturing brochure": 1,
+    "Shared-building coordinate cross-check (Alfa Woodworks permit)": 1,
+    "Silicon Valley Precision current ISO certificate": 1,
+    "Silicon Valley Precision official facility description": 1,
+    "Simple Machining official about and facility": 1,
+    "Specialty Precision Machining official About Us": 1,
+    "Stockton Chamber 2026 Industrial Technology Barbecue": 1,
+    "Sunrise Fresh official contact page": 1,
+    "Sunrise Fresh official team portraits": 1,
+    "TECO official current contact": 1,
+    "TECO official relocation announcement": 1,
+    "TECO official services": 1,
+    "TORXUN official About page": 1,
+    "Thermal Press official CNC manufacturing facility": 1,
+    "Tiger Precision Machining official site": 1,
+    "US Census TIGER/Line local geocoding": 429,
     "USDA FSIS via Recall Bench": 238,
-    "Regional owner and portrait research": 848
+    "USDA Organic Integrity Database": 6,
+    "Uni-Fab — Our Story": 1,
+    "Valley Custom Powder Coating official site": 1,
+    "Vander-Bend official capabilities": 1,
+    "Velo3D official opening announcement": 1,
+    "Wall to Wall Cabinets and Trim official site": 1,
+    "West Coast Cryogenics — About": 1,
+    "West Coast Cryogenics — Careers": 1,
+    "West Coast Cryogenics — Fabrication shop capabilities": 1,
+    "Williams Manufacturing — General Metal Fabrication": 1,
+    "Williams Manufacturing — Home": 1,
+    "World Food Products official address": 1,
+    "World Food Products official facility description": 1
   },
   "regional_ownership_coverage": {
-    "corporate_owned_businesses": 293,
-    "any_current_owner_businesses": 839,
-    "distinct_named_owner_people": 513,
-    "named_individual_owner_businesses": 494,
+    "any_current_owner_businesses": 842,
+    "named_individual_owner_businesses": 499,
+    "distinct_named_owner_people": 521,
+    "current_person_owner_photo_businesses": 91,
+    "distinct_people_with_current_owner_photos": 104,
+    "corporate_owned_businesses": 290,
     "family_owned_businesses": 83,
-    "current_person_owner_photo_businesses": 90,
-    "distinct_people_with_current_owner_photos": 102,
     "employee_owned_businesses": 3,
-    "regional_denominator": 1724,
-    "baseline_rows_with_existing_owner_name": 405,
-    "baseline_owner_type_unknown_businesses": 54,
-    "named_individual_owner_pct": 28.65,
-    "corporate_owned_pct": 17.0,
-    "any_current_owner_pct": 48.67,
-    "current_person_owner_photo_pct_of_named_individual_owner_businesses": 18.22,
-    "distinct_named_owner_photo_pct": 19.88,
-    "baseline_plant_row_count": 31284,
-    "candidate_plant_row_count": 31284,
-    "row_count_preserved": true,
+    "regional_denominator": 1745,
     "snapshot_date": "2026-09-22",
-    "scope": "Fixed 1,724 current-source location records across Tracy and 12 nearby towns; records are not a deduplicated census of operating businesses.",
-    "ownership_basis": "Publicly reported ownership. Source dates and uncertainty differ; legal shareholding has not been independently certified. Individuals are counted separately from families and corporations.",
-    "photo_basis": "Identified public portrait or captioned group photograph; source date retained where available. Some are archival.",
+    "scope": "Current-source location records across Tracy and 12 nearby towns; not a census of independent operating businesses.",
+    "ownership_basis": "Source-reported ownership; names, families and corporate parents remain distinct. Directory dates and uncertainty are retained.",
+    "photo_basis": "Publicly identified portraits or captioned group photographs. Archival source dates are retained.",
+    "named_individual_owner_pct": 28.6,
+    "corporate_owned_pct": 16.62,
+    "any_current_owner_pct": 48.25,
+    "current_person_owner_photo_pct_of_named_individual_owner_businesses": 18.24,
+    "distinct_named_owner_photo_pct": 19.96,
     "individual_owner_target_met": false,
     "owner_photo_target_met": false
+  },
+  "data_snapshot_sha256": "0b96c9188885ef9485490dbc5e16a319b4410b0d40422382b1c85af9a9af25d8",
+  "latest_expansion": {
+    "generated_at": "2026-09-22T23:52:32.279062+00:00",
+    "baseline_records": 31284,
+    "final_records": 31310,
+    "sha256": "0b96c9188885ef9485490dbc5e16a319b4410b0d40422382b1c85af9a9af25d8",
+    "regional_before": {
+      "total": 2210,
+      "current": 1724,
+      "mapped": 1485,
+      "employees_exact": 339,
+      "employees_range_only": 664,
+      "staff_known": 1003,
+      "owners": 886,
+      "photo_records": 90,
+      "photo_profiles": 115
+    },
+    "regional_after": {
+      "total": 2235,
+      "current": 1745,
+      "mapped": 1509,
+      "employees_exact": 338,
+      "employees_range_only": 662,
+      "staff_known": 1000,
+      "owners": 889,
+      "photo_records": 91,
+      "photo_profiles": 117
+    },
+    "new_records_mapped": 28,
+    "added": 28,
+    "enriched": 28,
+    "duplicate_rows_merged": 2,
+    "historical_corrections": 5,
+    "address_corrections": 1,
+    "towns": [
+      "Brentwood",
+      "Byron",
+      "Discovery Bay",
+      "Escalon",
+      "French Camp",
+      "Lathrop",
+      "Livermore",
+      "Manteca",
+      "Mountain House",
+      "Ripon",
+      "Stockton",
+      "Tracy",
+      "Vernalis"
+    ],
+    "methodology": "Directory and certification batch screening followed by company-level production verification. Not an exhaustive census. Current-source records include unverified directory leads."
   }
 }
