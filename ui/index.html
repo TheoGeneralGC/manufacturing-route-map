@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173f36">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Manufacturers near me</title>
+  <link rel="stylesheet" href="./vendor/leaflet.css">
+  <link rel="stylesheet" href="./vendor/MarkerCluster.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./vendor/leaflet.js"></script>
+  <script defer src="./vendor/leaflet.markercluster.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <svg class="icon-defs" aria-hidden="true"><defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><path d="m12 3 9 9-9 9-9-9 9-9Z"/><path d="M9 15v-4h7m-3-3 3 3-3 3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
+    <symbol id="i-factory" viewBox="0 0 24 24"><path d="M3 21V10l6 4V8l6 4V3h4l2 18H3Z"/><path d="M7 17h1m4 0h1m4 0h1"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  </defs></svg>
+  <header class="search-panel" aria-label="Search manufacturers">
+    <div class="search-row"><label class="search-field"><svg><use href="#i-search"/></svg><input id="search" type="search" autocomplete="off" placeholder="Business, city, county or ZIP" aria-label="Business, city, county or ZIP"></label><button id="filter-button" class="button square filter-button" aria-label="Open filters"><svg><use href="#i-filter"/></svg><span id="filter-count" hidden>0</span></button></div>
+    <div class="search-actions"><button id="near-me-button" class="button button-primary"><svg><use href="#i-locate"/></svg>My location</button><button id="results-button" class="button" data-view="list" aria-pressed="false" aria-controls="results-panel"><svg><use href="#i-list"/></svg>Results <span id="mobile-count"></span></button><button id="mobile-route-button" class="button"><svg><use href="#i-route"/></svg>Route</button><button id="coverage-button" class="button square" aria-label="About the data"><svg><use href="#i-info"/></svg></button></div>
+    <section id="nearby-controls" class="nearby-bar" aria-label="Nearby search" hidden><div class="location-status"><strong id="location-status" role="status" aria-live="polite"></strong><span id="location-accuracy">Straight-line distances. Plan your stops while parked.</span></div><label class="radius-label">Within<select id="radius-filter" aria-label="Nearby search radius"><option value="5">5 miles</option><option value="15" selected>15 miles</option><option value="30">30 miles</option><option value="60">60 miles</option></select></label><button id="clear-location" class="button button-quiet">All areas</button></section>
+  </header>
+  <main class="workspace">
+    <section id="results-panel" class="results-panel" aria-label="Matching locations" hidden>
+      <div class="results-sheet-heading"><div class="quick-tabs" role="group" aria-label="Outreach status"><button data-status="all" class="active" aria-pressed="true">All results</button><button data-status="saved" aria-pressed="false"><svg><use href="#i-star"/></svg>Shortlist <span id="saved-count">0</span></button><button data-status="visited" aria-pressed="false">Visited <span id="visited-count">0</span></button></div><button class="button square" data-view="map" aria-label="Close results"><svg><use href="#i-close"/></svg></button></div>
+      <div id="active-filters" class="active-filters" hidden></div>
+      <div class="results-toolbar"><div><strong id="result-count" role="status" aria-live="polite">Loading…</strong><span id="result-subtitle"></span></div><label class="sort-label"><span class="sr-only">Sort locations</span><select id="sort"><option value="name">A–Z</option><option value="distance">Nearest first</option><option value="employees">Most employees</option></select></label></div>
+      <div id="result-list" class="result-list" tabindex="-1"><div class="loading-state"><span class="loading-dot"></span><p>Loading manufacturers…</p></div></div>
+      <footer class="sidebar-footer"><button id="plan-route-button" class="button"><svg><use href="#i-route"/></svg>Plan route</button><button id="export-button" class="button button-quiet" aria-label="Export filtered results"><svg><use href="#i-download"/></svg>Export</button><span id="data-date"></span></footer>
+    </section>
+    <section class="map-shell" aria-label="Map of manufacturing locations">
+      <div id="map"></div>
+      <div class="map-top-controls"><label class="map-area-toggle"><input id="in-view" type="checkbox"><span>Search this map area</span></label><div id="origin-label" class="origin-label" hidden></div></div>
+      <div class="map-actions"><button id="location-button" class="button square" title="Refresh and center my location" aria-label="Refresh and center my location"><svg><use href="#i-locate"/></svg></button><button id="fit-button" class="button square" title="Show all filtered locations" aria-label="Show all filtered locations"><svg><use href="#i-expand"/></svg></button><button id="center-button" class="button square" title="Sort from map center" aria-label="Sort from map center"><svg><use href="#i-pin"/></svg></button></div>
+      <div class="map-legend employee-legend" aria-label="Employee size legend and filters">
+        <div class="employee-legend-heading"><button id="legend-toggle" aria-expanded="true" aria-controls="legend-options">Employees <span aria-hidden="true">▾</span></button><button data-employee-band="" class="active" aria-pressed="true">All sizes</button></div>
+        <div id="legend-options" class="employee-legend-options" role="group" aria-label="Filter by employee size">
+          <button class="staff-xs" data-employee-band="1-9" aria-pressed="false" aria-label="Show 1 to 9 employees"><i class="employee-swatch" aria-hidden="true"></i>1–9</button>
+          <button class="staff-sm" data-employee-band="10-49" aria-pressed="false" aria-label="Show 10 to 49 employees"><i class="employee-swatch" aria-hidden="true"></i>10–49</button>
+          <button class="staff-md" data-employee-band="50-249" aria-pressed="false" aria-label="Show 50 to 249 employees"><i class="employee-swatch" aria-hidden="true"></i>50–249</button>
+          <button class="staff-lg" data-employee-band="250+" aria-pressed="false" aria-label="Show 250 or more employees"><i class="employee-swatch" aria-hidden="true"></i>250+</button>
+          <button class="staff-unknown" data-employee-band="unknown" aria-pressed="false" aria-label="Show locations with unknown headcount"><i class="employee-swatch" aria-hidden="true"></i>Unknown</button>
+          <button class="staff-uncertain" data-employee-band="uncertain" aria-pressed="false" aria-label="Show uncertain ranges or headcounts covering multiple addresses" hidden><i class="employee-swatch" aria-hidden="true"></i>Uncertain</button>
+          <button class="staff-zero" data-employee-band="zero" aria-pressed="false" aria-label="Show source-reported zero employees" hidden><i class="employee-swatch" aria-hidden="true"></i>0 reported</button>
+        </div>
+        <p>Cluster rings show the mix of locations, not employee totals. Tap a size to filter.</p>
+      </div>
+      <div id="map-notice" class="map-notice" hidden></div>
+    </section>
+    <section id="detail-panel" class="detail-panel" aria-label="Location details" tabindex="-1" hidden></section>
+  </main>
+  <dialog id="route-dialog" class="modal route-modal" aria-labelledby="route-title"><div class="modal-header"><div><h2 id="route-title">Plan a short route</h2></div><button class="button square close-dialog" aria-label="Close route planner"><svg><use href="#i-close"/></svg></button></div><div class="modal-content"><p class="route-help">Choose up to 4 shortlisted locations. Open the route in Google Maps for roads, traffic, and travel times. Plan while parked.</p><p id="route-origin" class="route-origin"></p><div class="route-tools"><button id="route-order-button" class="button">Shortest straight-line order</button><button id="route-clear-button" class="button button-quiet">Clear stops</button></div><ol id="route-stops" class="route-stops" aria-label="Selected stops in route order"></ol><div id="route-options" class="route-options"></div><p id="route-summary" role="status" aria-live="polite"></p></div><div class="modal-footer"><button id="route-find-button" class="button">Find locations</button><a id="route-open" class="button button-primary" target="_blank" rel="noopener noreferrer">Open Google Maps<svg><use href="#i-route"/></svg></a></div></dialog>
+  <dialog id="filter-dialog" class="modal filter-modal"><div class="modal-header"><div><h2>Find the right locations</h2></div><button class="button square close-dialog" aria-label="Close filters"><svg><use href="#i-close"/></svg></button></div><form id="filter-form">
+    <div class="filter-grid">
+      <label>County<select id="county-filter"><option value="">All counties</option></select></label>
+      <label>Industry<select id="industry-filter"><option value="">All manufacturing industries</option></select></label>
+      <label>Employees<select id="employee-filter"><option value="">Any staffing level</option><option value="known">Known headcount or range</option><option value="unknown">Headcount unavailable</option><option value="1-9">1–9 employees</option><option value="10-49">10–49 employees</option><option value="50-249">50–249 employees</option><option value="250+">250+ employees</option><option value="uncertain">Uncertain band / multiple addresses</option><option value="zero">Source reports zero employees</option></select><small>A range gets a size color only when the whole range fits one band. Cross-band ranges and counts covering multiple addresses are marked uncertain. Company counts can differ from plant counts.</small></label>
+      <label>Evidence<select id="evidence-filter"><option value="current" selected>Current-source leads</option><option value="">All records, including historical</option><option value="facility_evidence">Facility evidence</option><option value="directory_lead">Directory leads</option><option value="historical_registry">Historical / unverified</option></select><small>Current-source leads include facility evidence and directory leads. Current occupancy still needs checking.</small></label>
+      <label>Location precision<select id="quality-filter"><option value="">Any precision</option><option value="mapped">Has a map location</option><option value="unmapped">Address only / not mapped</option><option value="precise">Street, parcel, or rooftop</option><option value="approximate">City or ZIP estimate</option><option value="unknown">Other / unknown precision</option></select></label>
+      <label>Operating status<select id="operating-filter"><option value="">Any reported status</option><option value="active">Reported active</option><option value="inactive">Reported inactive / closed</option><option value="unknown">Status unavailable</option></select></label>
+      <label>Owner name<select id="owner-filter"><option value="">Any owner information</option><option value="known">Owner name available</option><option value="unknown">Owner name unavailable</option></select></label>
+      <label>Business contact<select id="contact-filter"><option value="">Any contact information</option><option value="known">Contact name available</option><option value="unknown">Contact name unavailable</option></select><small>A reported business contact is not necessarily an owner.</small></label>
+      <label>Source dataset<select id="source-filter"><option value="">All source datasets</option></select><small>Find records from a specific directory, licensing, or facility dataset.</small></label>
+    </div>
+    <label class="checkbox-row"><input id="unvisited-filter" type="checkbox">Only locations I have not visited</label>
+    <p class="filter-help">Historical / unverified records are hidden by default. Choose “All records, including historical” to include them. Option counts cover the full inventory; map and list counts reflect your filters. Check the address before a long drive.</p>
+    <div class="modal-footer"><button type="button" id="reset-filters" class="button">Reset filters</button><button type="submit" class="button button-primary">Show locations<svg><use href="#i-arrow"/></svg></button></div>
+  </form></dialog>
+  <dialog id="coverage-dialog" class="modal coverage-modal"><div class="modal-header"><div><h2>Coverage & sources</h2></div><button class="button square close-dialog" aria-label="Close data information"><svg><use href="#i-close"/></svg></button></div><div id="coverage-content" class="modal-content"></div><div class="modal-footer coverage-footer"><button id="backup-button" class="button"><svg><use href="#i-download"/></svg>Back up notes</button><label class="button import-label">Restore notes<input id="restore-input" type="file" accept="application/json,.json" class="sr-only"></label></div></dialog>
+  <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+</body>
+</html>

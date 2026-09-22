@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const project=JSON.parse(fs.readFileSync(path.join(here,'.vercel/project.json'),'utf8'));
+if(project.projectName!=='manufacturing-route-map'||project.orgId!=='team_jLr36BtWNJTPsp5X8UMwQLWN')throw Error('Refusing to deploy to an unexpected Vercel project.');
+const manifest=JSON.parse(fs.readFileSync(path.join(here,'build-manifest.json'),'utf8'));
+if(manifest.access!=='public'||manifest.public_static_files!==0||manifest.max_response_bytes>=4_000_000)throw Error('Unexpected access mode or oversized build.');
+const cli='npx';
+const args=['--yes','vercel@59.23.2','deploy','--prebuilt','--yes','--scope','generalgc'];
+if(process.argv.includes('--prod'))args.push('--prod');
+const result=spawnSync(cli,args,{cwd:here,encoding:'utf8'});
+process.stdout.write(result.stdout||'');process.stderr.write(result.stderr||'');
+if(result.status!==0)process.exit(result.status||1);
+const urls=(result.stdout||'').match(/https:\/\/[^\s]+\.vercel\.app/g)||[];
+if(urls.length)fs.writeFileSync(path.join(here,process.argv.includes('--prod')?'production-deployment.json':'preview-deployment.json'),JSON.stringify({project:project.projectName,url:urls.at(-1),data_sha256:manifest.data_sha256,deployed_at:new Date().toISOString()},null,2));

@@ -1,0 +1,323 @@
+{
+  "generated_at": "2026-09-22T18:20:30.949791+00:00",
+  "title": "Manufacturing field atlas",
+  "description": "A broad inventory across 39 Central Valley, Bay Area, foothill and Central Coast counties, assembled from bulk regulatory, workplace, licensing and business-directory data. Records are manufacturing candidates, not a certified census of operating plants.",
+  "total_records": 30784,
+  "mapped_records": 28222,
+  "employee_records": 3609,
+  "owner_records": 2148,
+  "contact_records": 15271,
+  "county_count": 39,
+  "counties": [
+    {
+      "name": "Alameda",
+      "count": 3828
+    },
+    {
+      "name": "Amador",
+      "count": 152
+    },
+    {
+      "name": "Butte",
+      "count": 392
+    },
+    {
+      "name": "Calaveras",
+      "count": 90
+    },
+    {
+      "name": "Colusa",
+      "count": 113
+    },
+    {
+      "name": "Contra Costa",
+      "count": 1108
+    },
+    {
+      "name": "El Dorado",
+      "count": 295
+    },
+    {
+      "name": "Fresno",
+      "count": 1204
+    },
+    {
+      "name": "Glenn",
+      "count": 97
+    },
+    {
+      "name": "Kern",
+      "count": 1027
+    },
+    {
+      "name": "Kings",
+      "count": 151
+    },
+    {
+      "name": "Lake",
+      "count": 83
+    },
+    {
+      "name": "Madera",
+      "count": 221
+    },
+    {
+      "name": "Marin",
+      "count": 264
+    },
+    {
+      "name": "Mariposa",
+      "count": 40
+    },
+    {
+      "name": "Mendocino",
+      "count": 328
+    },
+    {
+      "name": "Merced",
+      "count": 320
+    },
+    {
+      "name": "Monterey",
+      "count": 615
+    },
+    {
+      "name": "Napa",
+      "count": 2280
+    },
+    {
+      "name": "Nevada",
+      "count": 185
+    },
+    {
+      "name": "Placer",
+      "count": 442
+    },
+    {
+      "name": "Sacramento",
+      "count": 1328
+    },
+    {
+      "name": "San Benito",
+      "count": 127
+    },
+    {
+      "name": "San Francisco",
+      "count": 816
+    },
+    {
+      "name": "San Joaquin",
+      "count": 1657
+    },
+    {
+      "name": "San Luis Obispo",
+      "count": 1209
+    },
+    {
+      "name": "San Mateo",
+      "count": 1199
+    },
+    {
+      "name": "Santa Clara",
+      "count": 4966
+    },
+    {
+      "name": "Santa Cruz",
+      "count": 383
+    },
+    {
+      "name": "Shasta",
+      "count": 292
+    },
+    {
+      "name": "Solano",
+      "count": 678
+    },
+    {
+      "name": "Sonoma",
+      "count": 2495
+    },
+    {
+      "name": "Stanislaus",
+      "count": 915
+    },
+    {
+      "name": "Sutter",
+      "count": 113
+    },
+    {
+      "name": "Tehama",
+      "count": 116
+    },
+    {
+      "name": "Tulare",
+      "count": 543
+    },
+    {
+      "name": "Tuolumne",
+      "count": 63
+    },
+    {
+      "name": "Yolo",
+      "count": 556
+    },
+    {
+      "name": "Yuba",
+      "count": 93
+    }
+  ],
+  "source_counts_before_merge": {
+    "ARMS Pumps & Repairs USA": 1,
+    "ARMS Pumps & Repairs official website": 1,
+    "CA EDD / Data Axle employer directory": 105,
+    "California ABC": 5781,
+    "California SMARTS": 3689,
+    "City of Tracy Economic Development": 2,
+    "City of Tracy business license listings": 3,
+    "Data Axle Reference Solutions": 1450,
+    "EPA ECHO / FRS": 13096,
+    "EPA FRS": 11347,
+    "FDA Device Registration": 454,
+    "Glassfab Tempering Services": 3,
+    "Leprino Foods official careers": 1,
+    "M-FIND v1.1": 3,
+    "NSF manufacturing facility listings": 1,
+    "OSHA ITA": 2388,
+    "US Census TIGER/Line local geocoding": 54,
+    "USDA FSIS via Recall Bench": 238
+  },
+  "merged_overlap_records": 5902,
+  "sources": [
+    {
+      "name": "ARMS Pumps & Repairs USA",
+      "url": "https://www.armspumps.net/pages/services.html",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "ARMS Pumps & Repairs official website",
+      "url": "https://www.armspumps.net/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "CA EDD / Data Axle employer directory",
+      "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?empid=103879029&geogArea=0604000077&menuChoice=emp",
+      "records": 105,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California ABC",
+      "url": "https://www.abc.ca.gov/licensing/license-lookup/license-lookup-reports/",
+      "records": 5781,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "California SMARTS",
+      "url": "https://data.ca.gov/dataset/stormwater-regulatory-including-enforcement-actions-information-and-water-quality-results",
+      "records": 3689,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "City of Tracy Economic Development",
+      "url": "https://thinkinsidethetriangle.com/site-selection/major-employers/?cat=Major+Employers%2CManufacturing",
+      "records": 2,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "City of Tracy business license listings",
+      "url": "https://www.cityoftracy.org/files/assets/city/v/2/finance/documents/new-business-license-tax-listing/2026-01-31-new-business-listing.pdf#page=4",
+      "records": 3,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Data Axle Reference Solutions",
+      "url": "https://www.referenceusa.com/",
+      "records": 1450,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "EPA ECHO / FRS",
+      "url": "https://echo.epa.gov/tools/data-downloads",
+      "records": 13096,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "EPA FRS",
+      "url": "https://www.epa.gov/frs/frs-data-resources",
+      "records": 11347,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "FDA Device Registration",
+      "url": "https://www.fda.gov/medical-devices/device-registration-and-listing/establishment-registration-and-medical-device-listing-files-download",
+      "records": 454,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Glassfab Tempering Services",
+      "url": "https://www.glassfabusa.com/about/",
+      "records": 3,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Leprino Foods official careers",
+      "url": "https://careers.leprino.com/job/Tracy-Plant-Maintenance-Supervisor-CA-95376/1333711000/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "M-FIND v1.1",
+      "url": "https://zenodo.org/records/21827821",
+      "records": 3,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "NSF manufacturing facility listings",
+      "url": "https://info.nsf.org/Certified/455GMP/Listings.asp?Company=C0865724&Standard=455-2GMP",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "OSHA ITA",
+      "url": "https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data",
+      "records": 2388,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "US Census TIGER/Line local geocoding",
+      "url": "https://www2.census.gov/geo/tiger/TIGER2025/ADDRFEAT/tl_2025_06077_addrfeat.zip",
+      "records": 54,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "USDA FSIS via Recall Bench",
+      "url": "https://recallbench.com/data/fsis-establishments.csv",
+      "records": 238,
+      "retrieved_at": "2026-09-22"
+    }
+  ],
+  "limitations": [
+    "Regulatory active status does not guarantee that a factory is currently operating; classification can be secondary or historical.",
+    "Small unregulated shops can be missing; coverage is not a quantified percentage of all operating plants.",
+    "OSHA figures are employer-reported annual average workers for the stated year, not today\u2019s exact staff count. Data Axle figures may be modeled estimates.",
+    "Reported owners can be legal entities; contacts and presidents are not assumed to be individual owners. Contacts may be undated.",
+    "Production alcohol licenses include co-located businesses and may include offices or shared production sites.",
+    "Data Axle coverage is partial; current search contains 23,461 vendor-classified manufacturing listings. It is not a plant census.",
+    "Conservative name-and-address matching preserves ambiguous co-located businesses, so some duplicate locations can remain.",
+    "US Census geocodes are street interpolations, not verified entrances. Approximate provider points are labeled. Address-only records are retained.",
+    "FSIS staffing bands describe individual establishments; Very Small can be based on revenue, so it is not converted to a headcount. Broad ranges spanning map colors are marked uncertain. FDA official correspondents may be outside regulatory contacts."
+  ],
+  "current_source_records": 22506,
+  "historical_records": 8278,
+  "current_source_mapped": 21664,
+  "current_source_employee_records": 3608,
+  "current_source_owner_records": 2148,
+  "current_source_contact_records": 12526,
+  "employee_range_only_records": 119,
+  "current_source_employee_range_only_records": 119,
+  "current_source_employee_known_records": 3727,
+  "data_axle_enrichment_only_records": 17,
+  "osha_enrichment_only_records": 48,
+  "classification_excluded_records": 4
+}

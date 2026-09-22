@@ -1,0 +1,10 @@
+node_modules/
+.vercel/
+.env*
+.access-key
+.share-link
+.DS_Store
+data/plants.json
+deploy/build-manifest.json
+deploy/*-deployment.json
+qa/live-deployment-verification.json

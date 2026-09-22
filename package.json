@@ -1,0 +1,15 @@
+{
+  "name": "manufacturing-route-map",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public mobile map for manufacturing outreach",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node deploy/build.mjs",
+    "test": "node --test deploy/security.test.cjs qa/map-ui.test.cjs",
+    "deploy": "node deploy/deploy.mjs --prod",
+    "verify": "node deploy/verify-live.mjs"
+  }
+}
