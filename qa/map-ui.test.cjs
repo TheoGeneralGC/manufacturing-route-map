@@ -11,7 +11,7 @@ function element(id) {
   if (!elements.has(id)) elements.set(id, {
     id, value: id === 'sort' ? 'name' : id === 'radius-filter' ? '15' : '', hidden: id === 'results-panel', textContent: '', classList:classList(), listeners:{},
     selectedOptions: [{textContent: 'Current-source leads'}],
-    addEventListener(type,fn) { this.listeners[type]=fn; }, querySelectorAll() { return []; }, contains() { return false; }, setAttribute(key,value){this[key]=value;},removeAttribute(key){delete this[key];},focus(){this.focused=true;},showModal(){this.open=true;},close(){this.open=false;},
+    addEventListener(type,fn) { this.listeners[type]=fn; }, querySelectorAll() { return []; }, contains() { return false; }, setAttribute(key,value){this[key]=value;},removeAttribute(key){delete this[key];},focus(){this.focused=true;},select(){this.selected=true;},showModal(){this.open=true;},close(){this.open=false;},
   });
   return elements.get(id);
 }
@@ -36,7 +36,7 @@ const context = vm.createContext({
   },
 });
 const source = fs.readFileSync(path.join(__dirname, '../ui/app.js'), 'utf8');
-const testable = source.replace(/  start\(\);\n\}\)\(\);\s*$/, '  globalThis.qa = {state,normalize,renderMap,filterResults,websiteUrl,phoneHref,dateLabel,directionsUrl,renderDetail,renderCoverage,employeeBand,clusterComposition,createClusterIcon,matches,employeeShort,employeeChip,useLocation,clearNearby,shortestStopOrder,routeUrl,loadPlants,setupEvents};\n})();');
+const testable = source.replace(/  start\(\);\n\}\)\(\);\s*$/, '  globalThis.qa = {state,normalize,renderMap,filterResults,websiteUrl,phoneHref,dateLabel,directionsUrl,renderDetail,renderCoverage,employeeBand,clusterComposition,createClusterIcon,matches,employeeShort,employeeChip,useLocation,clearNearby,shortestStopOrder,routeUrl,loadPlants,setupEvents,businessBrief,openGemini,copyAndOpenGemini,renderRoute};\n})();');
 assert.notEqual(testable, source, 'Test harness must replace initialization, not start a browser app.');
 vm.runInContext(testable, context);
 const {state, normalize, renderMap, filterResults, websiteUrl, phoneHref, dateLabel, directionsUrl, renderDetail, renderCoverage, employeeBand, clusterComposition, createClusterIcon, matches, employeeShort, employeeChip} = context.qa;
@@ -293,6 +293,16 @@ async function testMobileAndProductionLoading() {
   state.filters.employee='250+';filterResults();
   assert.equal(element('location-status').textContent,'0 manufacturers within 15 miles of you','The nearby count follows active result filters, including zero matches.');
   state.filters.employee='';filterResults();
+  const quarter=normalize({id:'quarter-mile',name:'Quarter Mile',latitude:37.33+0.25/69.0934,longitude:-121.89,evidence_type:'facility_evidence'},4);
+  const threeQuarter=normalize({id:'three-quarter-mile',name:'Three Quarter Mile',latitude:37.33+0.75/69.0934,longitude:-121.89,evidence_type:'facility_evidence'},5);
+  const outside=normalize({id:'over-one-mile',name:'Over One Mile',latitude:37.33+1.1/69.0934,longitude:-121.89,evidence_type:'facility_evidence'},6);
+  const previousPlants=state.plants;state.plants=[quarter,threeQuarter,outside];
+  element('radius-filter').value='0.5';useLocation();success({coords:{latitude:37.33,longitude:-121.89,accuracy:18}});
+  assert.equal(state.radius,0.5);assert.equal(state.map.zoom,16);assert.deepEqual(Array.from(state.filtered,p=>p.id),['quarter-mile']);
+  element('radius-filter').value='1';element('radius-filter').listeners.change();
+  assert.equal(state.radius,1);assert.equal(state.map.zoom,15);assert.deepEqual(Array.from(state.filtered,p=>p.id),['quarter-mile','three-quarter-mile']);
+  assert.equal(element('location-status').textContent,'2 manufacturers within 1 mile of you');
+  state.plants=previousPlants;state.plantsById=new Map(state.plants.map(p=>[p.id,p]));
   element('radius-filter').value='60';element('radius-filter').listeners.change();
   assert.equal(state.radius,60);assert.equal(state.filtered.length,2,'Widening the radius includes farther current-source plants.');
   assert.equal(element('location-status').textContent,'2 manufacturers within 60 miles of you','Changing the radius updates both the count and distance label.');
@@ -358,7 +368,26 @@ async function testMobileAndProductionLoading() {
   await assert.rejects(loadPlants(),/part is incomplete/);
   context.fetch=async url=>String(url).endsWith('manifest.json')?response({...manifest,total_records:2,chunks:[{path:'plants-000.json',records:1}]}):response([{id:'one'}]);
   await assert.rejects(loadPlants(),/dataset is incomplete/);
+  const {businessBrief,openGemini,copyAndOpenGemini,renderRoute}=context.qa;
+  const company=normalize({id:'brief-plant',name:'Accentra Health Inc',address:'18520 Stanford Rd',city:'Tracy',zip:'95377',industry:'Medical device manufacturing',employees:24,employee_scope:'Company-wide; plant count unknown',owner_name:'Reported Owner',owner_role:'Reported sole owner',owner_source_url:'https://example.com/ownership',owner_profiles:[null,{name:'Reported Owner',photo_source_url:'https://example.com/bio'}],source_name:'Business directory',sources:[{name:'Directory',url:'https://example.com/facility',snapshot_date:'2026-09-01'}],field_notes:'PRIVATE FIELD NOTE',notes:'UNREVIEWED FREE TEXT'},0);
+  state.notes[company.id]={notes:'PRIVATE FIELD NOTE',visited:true};state.origin={lat:12.3456789,lng:98.7654321};
+  const brief=businessBrief(company);
+  for(const fact of ['Accentra Health Inc','18520 Stanford Rd','95377','Medical device manufacturing','Company-wide; plant count unknown','Reported Owner','https://example.com/ownership','https://example.com/facility','2026-09-01','https://example.com/bio'])assert.ok(brief.includes(fact),fact);
+  assert.doesNotMatch(brief,/PRIVATE FIELD NOTE|UNREVIEWED FREE TEXT|12\.3456789|98\.7654321/,'Gemini receives business fields, never GPS or personal notes.');
+  assert.match(brief,/not verified truth/);assert.match(brief,/Distinguish owners from founders/);
+  state.selected=company;renderDetail();assert.match(element('detail-panel').innerHTML,/id="detail-gemini"/);assert.doesNotMatch(element('detail-panel').innerHTML,/Add to shortlist/);
+  element('detail-gemini').listeners.click();assert.equal(element('gemini-dialog').open,true);assert.equal(element('gemini-brief').value,brief);
+  let copied='',destination='';context.navigator.clipboard={async writeText(value){copied=value;}};context.window.open=()=>({opener:{},location:{replace(url){destination=url;}},close(){}});
+  await copyAndOpenGemini();assert.equal(copied,brief);assert.equal(destination,'https://gemini.google.com/app');assert.equal(element('gemini-copy-open').disabled,false);
+  destination='';context.window.open=()=>null;await copyAndOpenGemini();assert.equal(destination,'');assert.match(element('gemini-status').textContent,/Tap Open Gemini/,'A blocked popup retains the map and offers an explicit open link.');
+  context.navigator.clipboard={async writeText(){throw Error('denied');}};
+  await copyAndOpenGemini();assert.equal(destination,'');assert.equal(element('gemini-brief').selected,true);assert.match(element('gemini-status').textContent,/manually/);
+  delete context.navigator.clipboard;await copyAndOpenGemini();assert.equal(destination,'');assert.match(element('gemini-status').textContent,/manually/);
+  // Route selection remains available after removing the shortlist action.
+  state.selected=null;state.origin=null;state.plants=[near,tracy];state.plantsById=new Map(state.plants.map(p=>[p.id,p]));state.filtered=[tracy];state.notes={};state.routeIds=[];
+  renderRoute();assert.match(element('route-options').innerHTML,/Tracy Plant/);assert.doesNotMatch(element('route-options').innerHTML,/Add to shortlist/);
   const html=fs.readFileSync(path.join(__dirname,'../ui/index.html'),'utf8');
+  for(const radius of ['0.5','1','2','5','15','30','60'])assert.ok(html.includes(`value="${radius}"`));
   assert.match(html,/placeholder="Business, city, county or ZIP"/);assert.doesNotMatch(html,/Field Atlas|class="sidebar"|class="brand"/,'No visible branding or left drawer remains.');
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'Each UI control has a unique ID.');
   console.log('Passed GPS success/permission/timeout/unavailable/insecure/cancellation, nearby reset and search, route ordering/mobile limits, and atomic production chunk loading regressions.');
