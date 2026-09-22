@@ -40,6 +40,17 @@ const testable = source.replace(/  start\(\);\n\}\)\(\);\s*$/, '  globalThis.qa 
 assert.notEqual(testable, source, 'Test harness must replace initialization, not start a browser app.');
 vm.runInContext(testable, context);
 const {state, normalize, renderMap, filterResults, websiteUrl, phoneHref, dateLabel, directionsUrl, renderDetail, renderCoverage, employeeBand, clusterComposition, createClusterIcon, matches, employeeShort, employeeChip} = context.qa;
+state.selected=normalize({id:'owner-photo',name:'Shop',owner_name:'Example Owner',owner_profiles:[{name:'Example Owner',role:'Co-owner',source_url:'https://example.com/about',photo_url:'https://example.com/owner.jpg',photo_source_url:'https://example.com/about',photo_caption:'Named company portrait'}],headcount_evidence:[{employee_range:'11–50',scope:'Company-wide; plant staffing unavailable',source_url:'https://example.com/company'}]},0);
+renderDetail();
+assert.match(element('detail-panel').innerHTML,/https:\/\/example.com\/owner.jpg/);
+assert.match(element('detail-panel').innerHTML,/Ownership source/);
+assert.match(element('detail-panel').innerHTML,/Company-wide; plant staffing unavailable/);
+assert.equal(employeeBand(state.selected),'unknown','Company-wide supplemental evidence never assigns a plant employee color.');
+state.selected=normalize({id:'unsafe-owner',owner_name:'<img src=x onerror=alert(1)>',owner_profiles:[{name:'<script>bad</script>',source_url:'javascript:alert(1)',photo_url:'data:text/html,bad',photo_source_url:'https://example.com/story',photo_use:'article_link_only_unlabeled_group_photo'}]},0);
+renderDetail();
+assert.doesNotMatch(element('detail-panel').innerHTML,/<script>|href="(?:javascript|data):/);
+assert.match(element('detail-panel').innerHTML,/Owner article/,'Unlabeled group photographs are not presented as identified portraits.');
+state.selected=null;
 state.cluster = {
   clearLayers() { markersOnMap.length = 0; },
   addLayers(markers) { addedBatchSizes.push(markers.length); markersOnMap.push(...markers); },

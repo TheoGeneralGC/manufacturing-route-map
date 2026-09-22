@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-09-22T18:20:30.949791+00:00",
+  "generated_at": "2026-09-22T20:44:20.408149+00:00",
   "title": "Manufacturing field atlas",
   "description": "A broad inventory across 39 Central Valley, Bay Area, foothill and Central Coast counties, assembled from bulk regulatory, workplace, licensing and business-directory data. Records are manufacturing candidates, not a certified census of operating plants.",
-  "total_records": 30784,
-  "mapped_records": 28222,
-  "employee_records": 3609,
-  "owner_records": 2148,
-  "contact_records": 15271,
+  "total_records": 31284,
+  "mapped_records": 28535,
+  "employee_records": 3605,
+  "owner_records": 2392,
+  "contact_records": 15665,
   "county_count": 39,
   "counties": [
     {
       "name": "Alameda",
-      "count": 3828
+      "count": 3989
     },
     {
       "name": "Amador",
@@ -31,7 +31,7 @@
     },
     {
       "name": "Contra Costa",
-      "count": 1108
+      "count": 1152
     },
     {
       "name": "El Dorado",
@@ -107,7 +107,7 @@
     },
     {
       "name": "San Joaquin",
-      "count": 1657
+      "count": 1952
     },
     {
       "name": "San Luis Obispo",
@@ -166,26 +166,6 @@
       "count": 93
     }
   ],
-  "source_counts_before_merge": {
-    "ARMS Pumps & Repairs USA": 1,
-    "ARMS Pumps & Repairs official website": 1,
-    "CA EDD / Data Axle employer directory": 105,
-    "California ABC": 5781,
-    "California SMARTS": 3689,
-    "City of Tracy Economic Development": 2,
-    "City of Tracy business license listings": 3,
-    "Data Axle Reference Solutions": 1450,
-    "EPA ECHO / FRS": 13096,
-    "EPA FRS": 11347,
-    "FDA Device Registration": 454,
-    "Glassfab Tempering Services": 3,
-    "Leprino Foods official careers": 1,
-    "M-FIND v1.1": 3,
-    "NSF manufacturing facility listings": 1,
-    "OSHA ITA": 2388,
-    "US Census TIGER/Line local geocoding": 54,
-    "USDA FSIS via Recall Bench": 238
-  },
   "merged_overlap_records": 5902,
   "sources": [
     {
@@ -202,13 +182,13 @@
     },
     {
       "name": "CA EDD / Data Axle employer directory",
-      "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?empid=103879029&geogArea=0604000077&menuChoice=emp",
-      "records": 105,
+      "url": "https://labormarketinfo.edd.ca.gov/aspdotnet/databrowsing/empDetails.aspx?menuChoice=emp&empid=432812235&geogArea=0604000001",
+      "records": 865,
       "retrieved_at": "2026-09-22"
     },
     {
       "name": "California ABC",
-      "url": "https://www.abc.ca.gov/licensing/license-lookup/license-lookup-reports/",
+      "url": "https://www.abc.ca.gov/licensing/license-lookup/single-license/?RPTTYPE=12&LICENSE=597067",
       "records": 5781,
       "retrieved_at": "2026-09-22"
     },
@@ -231,20 +211,38 @@
       "retrieved_at": "2026-09-22"
     },
     {
+      "name": "Company / public-record verification",
+      "url": "https://tenutawinery.com/about/",
+      "records": 19,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Company contact verification",
+      "url": "https://www.njminc.com/about/",
+      "records": 2,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Company staffing statement",
+      "url": "https://gc-machining.com/about-us/",
+      "records": 1,
+      "retrieved_at": "2026-09-22"
+    },
+    {
       "name": "Data Axle Reference Solutions",
       "url": "https://www.referenceusa.com/",
-      "records": 1450,
+      "records": 1444,
       "retrieved_at": "2026-09-22"
     },
     {
       "name": "EPA ECHO / FRS",
-      "url": "https://echo.epa.gov/tools/data-downloads",
-      "records": 13096,
+      "url": "https://echo.epa.gov/detailed-facility-report?fid=110071118594",
+      "records": 13093,
       "retrieved_at": "2026-09-22"
     },
     {
       "name": "EPA FRS",
-      "url": "https://www.epa.gov/frs/frs-data-resources",
+      "url": "https://ofmpub.epa.gov/frs_public2/fii_query_detail.disp_program_facility?p_registry_id=110066589873",
       "records": 11347,
       "retrieved_at": "2026-09-22"
     },
@@ -280,14 +278,20 @@
     },
     {
       "name": "OSHA ITA",
-      "url": "https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data",
-      "records": 2388,
+      "url": "https://www.osha.gov/sites/default/files/ITA_300A_Summary_Data_2025_through_03-15-2026_v2.csv",
+      "records": 2393,
+      "retrieved_at": "2026-09-22"
+    },
+    {
+      "name": "Owner / company research",
+      "url": "https://www.livermorevine.com/blogs/tri-valley-foodist/2025/10/17/altamont-beer-works-brews-up-maui-waui-and-more/",
+      "records": 109,
       "retrieved_at": "2026-09-22"
     },
     {
       "name": "US Census TIGER/Line local geocoding",
-      "url": "https://www2.census.gov/geo/tiger/TIGER2025/ADDRFEAT/tl_2025_06077_addrfeat.zip",
-      "records": 54,
+      "url": "https://www2.census.gov/geo/tiger/TIGER2025/ADDRFEAT/tl_2025_06001_addrfeat.zip",
+      "records": 407,
       "retrieved_at": "2026-09-22"
     },
     {
@@ -306,18 +310,469 @@
     "Data Axle coverage is partial; current search contains 23,461 vendor-classified manufacturing listings. It is not a plant census.",
     "Conservative name-and-address matching preserves ambiguous co-located businesses, so some duplicate locations can remain.",
     "US Census geocodes are street interpolations, not verified entrances. Approximate provider points are labeled. Address-only records are retained.",
-    "FSIS staffing bands describe individual establishments; Very Small can be based on revenue, so it is not converted to a headcount. Broad ranges spanning map colors are marked uncertain. FDA official correspondents may be outside regulatory contacts."
+    "FSIS staffing bands describe individual establishments; Very Small can be based on revenue, so it is not converted to a headcount. Broad ranges spanning map colors are marked uncertain. FDA official correspondents may be outside regulatory contacts.",
+    "The Tracy-region EDD pass exhausts 344 county/industry searches and 930 returned regional profiles, not every operating manufacturer. Listings can be stale or misclassified; confirmed non-manufacturers were excluded.",
+    "Owner portraits are links to public, explicitly labeled source photos. No photograph is inferred from a face or synthesized. Missing portraits remain unavailable. Ownership and personnel can change after the cited source date.",
+    "Supplemental company-wide staffing stays separate from plant headcounts and does not determine pin colors."
   ],
-  "current_source_records": 22506,
-  "historical_records": 8278,
-  "current_source_mapped": 21664,
-  "current_source_employee_records": 3608,
-  "current_source_owner_records": 2148,
-  "current_source_contact_records": 12526,
-  "employee_range_only_records": 119,
-  "current_source_employee_range_only_records": 119,
-  "current_source_employee_known_records": 3727,
+  "current_source_records": 23021,
+  "historical_records": 8263,
+  "current_source_mapped": 21987,
+  "current_source_employee_records": 3602,
+  "current_source_owner_records": 2392,
+  "current_source_contact_records": 12920,
+  "employee_range_only_records": 766,
+  "current_source_employee_range_only_records": 766,
+  "current_source_employee_known_records": 4368,
   "data_axle_enrichment_only_records": 17,
   "osha_enrichment_only_records": 48,
-  "classification_excluded_records": 4
+  "classification_excluded_records": 4,
+  "owner_photo_records": 28,
+  "tracy_region_review": {
+    "retrieved_at": "2026-09-22",
+    "region_cities": [
+      "Brentwood",
+      "Byron",
+      "Discovery Bay",
+      "Escalon",
+      "French Camp",
+      "Lathrop",
+      "Livermore",
+      "Manteca",
+      "Mountain House",
+      "Ripon",
+      "Stockton",
+      "Tracy",
+      "Vernalis"
+    ],
+    "acquisition": {
+      "groups": 344,
+      "result_pages": 476,
+      "county_result_rows": 5431,
+      "regional_profiles": 930,
+      "pagination_mismatches": []
+    },
+    "before": {
+      "total": 1710,
+      "current": 1209,
+      "mapped": 1162,
+      "employees_exact": 345,
+      "employees_range_only": 17,
+      "staff_known": 362,
+      "owners": 161,
+      "photo_records": 0,
+      "photo_profiles": 0
+    },
+    "after": {
+      "total": 2210,
+      "current": 1724,
+      "mapped": 1485,
+      "employees_exact": 339,
+      "employees_range_only": 664,
+      "staff_known": 1003,
+      "owners": 405,
+      "photo_records": 28,
+      "photo_profiles": 34
+    },
+    "cities": [
+      {
+        "city": "Brentwood",
+        "before": {
+          "total": 52,
+          "current": 28,
+          "mapped": 26,
+          "employees_exact": 5,
+          "employees_range_only": 0,
+          "staff_known": 5,
+          "owners": 6,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 86,
+          "current": 63,
+          "mapped": 56,
+          "employees_exact": 5,
+          "employees_range_only": 37,
+          "staff_known": 42,
+          "owners": 23,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      },
+      {
+        "city": "Byron",
+        "before": {
+          "total": 10,
+          "current": 6,
+          "mapped": 6,
+          "employees_exact": 0,
+          "employees_range_only": 0,
+          "staff_known": 0,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 14,
+          "current": 10,
+          "mapped": 6,
+          "employees_exact": 0,
+          "employees_range_only": 4,
+          "staff_known": 4,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      },
+      {
+        "city": "Discovery Bay",
+        "before": {
+          "total": 3,
+          "current": 2,
+          "mapped": 2,
+          "employees_exact": 1,
+          "employees_range_only": 0,
+          "staff_known": 1,
+          "owners": 1,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 7,
+          "current": 6,
+          "mapped": 4,
+          "employees_exact": 1,
+          "employees_range_only": 4,
+          "staff_known": 5,
+          "owners": 2,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      },
+      {
+        "city": "Escalon",
+        "before": {
+          "total": 31,
+          "current": 21,
+          "mapped": 21,
+          "employees_exact": 1,
+          "employees_range_only": 0,
+          "staff_known": 1,
+          "owners": 5,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 43,
+          "current": 33,
+          "mapped": 27,
+          "employees_exact": 1,
+          "employees_range_only": 14,
+          "staff_known": 15,
+          "owners": 9,
+          "photo_records": 1,
+          "photo_profiles": 3
+        }
+      },
+      {
+        "city": "French Camp",
+        "before": {
+          "total": 30,
+          "current": 21,
+          "mapped": 21,
+          "employees_exact": 3,
+          "employees_range_only": 0,
+          "staff_known": 3,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 31,
+          "current": 22,
+          "mapped": 17,
+          "employees_exact": 3,
+          "employees_range_only": 1,
+          "staff_known": 4,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      },
+      {
+        "city": "Lathrop",
+        "before": {
+          "total": 79,
+          "current": 57,
+          "mapped": 55,
+          "employees_exact": 19,
+          "employees_range_only": 2,
+          "staff_known": 21,
+          "owners": 4,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 100,
+          "current": 78,
+          "mapped": 65,
+          "employees_exact": 20,
+          "employees_range_only": 25,
+          "staff_known": 45,
+          "owners": 13,
+          "photo_records": 1,
+          "photo_profiles": 1
+        }
+      },
+      {
+        "city": "Livermore",
+        "before": {
+          "total": 392,
+          "current": 305,
+          "mapped": 299,
+          "employees_exact": 59,
+          "employees_range_only": 0,
+          "staff_known": 59,
+          "owners": 26,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 555,
+          "current": 470,
+          "mapped": 437,
+          "employees_exact": 58,
+          "employees_range_only": 215,
+          "staff_known": 273,
+          "owners": 108,
+          "photo_records": 18,
+          "photo_profiles": 20
+        }
+      },
+      {
+        "city": "Manteca",
+        "before": {
+          "total": 90,
+          "current": 62,
+          "mapped": 59,
+          "employees_exact": 16,
+          "employees_range_only": 1,
+          "staff_known": 17,
+          "owners": 14,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 117,
+          "current": 90,
+          "mapped": 70,
+          "employees_exact": 17,
+          "employees_range_only": 36,
+          "staff_known": 53,
+          "owners": 25,
+          "photo_records": 1,
+          "photo_profiles": 1
+        }
+      },
+      {
+        "city": "Mountain House",
+        "before": {
+          "total": 1,
+          "current": 1,
+          "mapped": 1,
+          "employees_exact": 0,
+          "employees_range_only": 0,
+          "staff_known": 0,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 2,
+          "current": 2,
+          "mapped": 2,
+          "employees_exact": 0,
+          "employees_range_only": 1,
+          "staff_known": 1,
+          "owners": 1,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      },
+      {
+        "city": "Ripon",
+        "before": {
+          "total": 47,
+          "current": 34,
+          "mapped": 32,
+          "employees_exact": 7,
+          "employees_range_only": 1,
+          "staff_known": 8,
+          "owners": 2,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 60,
+          "current": 48,
+          "mapped": 41,
+          "employees_exact": 7,
+          "employees_range_only": 23,
+          "staff_known": 30,
+          "owners": 11,
+          "photo_records": 1,
+          "photo_profiles": 2
+        }
+      },
+      {
+        "city": "Stockton",
+        "before": {
+          "total": 665,
+          "current": 417,
+          "mapped": 416,
+          "employees_exact": 97,
+          "employees_range_only": 7,
+          "staff_known": 104,
+          "owners": 45,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 916,
+          "current": 679,
+          "mapped": 572,
+          "employees_exact": 99,
+          "employees_range_only": 298,
+          "staff_known": 397,
+          "owners": 156,
+          "photo_records": 2,
+          "photo_profiles": 2
+        }
+      },
+      {
+        "city": "Tracy",
+        "before": {
+          "total": 299,
+          "current": 248,
+          "mapped": 217,
+          "employees_exact": 137,
+          "employees_range_only": 6,
+          "staff_known": 143,
+          "owners": 58,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 267,
+          "current": 215,
+          "mapped": 180,
+          "employees_exact": 128,
+          "employees_range_only": 5,
+          "staff_known": 133,
+          "owners": 57,
+          "photo_records": 4,
+          "photo_profiles": 5
+        }
+      },
+      {
+        "city": "Vernalis",
+        "before": {
+          "total": 11,
+          "current": 7,
+          "mapped": 7,
+          "employees_exact": 0,
+          "employees_range_only": 0,
+          "staff_known": 0,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        },
+        "after": {
+          "total": 12,
+          "current": 8,
+          "mapped": 8,
+          "employees_exact": 0,
+          "employees_range_only": 1,
+          "staff_known": 1,
+          "owners": 0,
+          "photo_records": 0,
+          "photo_profiles": 0
+        }
+      }
+    ],
+    "changes": {
+      "baseline_records": 30784,
+      "final_records": 31284,
+      "edd_profiles": 930,
+      "edd_added": 548,
+      "edd_enriched": 191,
+      "edd_already_present": 99,
+      "edd_excluded": 6,
+      "reviewed_exclusions": 9,
+      "reviewed_merge_groups": 16,
+      "reviewed_merged_rows": 23,
+      "additional_exact_address_duplicates": 2,
+      "offline_coordinates": 450,
+      "coordinate_points_withheld": 67,
+      "ambiguous_matches": 2,
+      "generated_at": "2026-09-22T20:44:18.612173+00:00",
+      "sha256": "ed0a68e1d23b989e619f36b48695343718f3d72a045ef41a1e5c2a661bf8aff8",
+      "out_of_region_records_unchanged": 29074,
+      "public_geometry_sha256": {
+        "San Joaquin": "bbe1af9a9d67668cda2436c50afba5a41c9f3864c96c6dc98389ff7b559c74e5",
+        "Alameda": "f8be55d8ec51164904536dc49d99d334ea1ffb7e2d972ed06b63201e3a59e74c",
+        "Contra Costa": "26c3bfa17d01448e7952822968ac3dbce4010c34b35c61de405462c58297dd69",
+        "Stanislaus": "239b99c2894cc4055148158ff068fd9852abb13b283cb684d8c4c4f7beb2c021"
+      },
+      "post_review_exclusions": 19,
+      "post_review_merge_groups": 34,
+      "post_review_merged_rows": 42,
+      "owner_research_records": 71
+    }
+  },
+  "baseline_source_counts_before_merge": {
+    "ARMS Pumps & Repairs USA": 1,
+    "ARMS Pumps & Repairs official website": 1,
+    "CA EDD / Data Axle employer directory": 105,
+    "California ABC": 5781,
+    "California SMARTS": 3689,
+    "City of Tracy Economic Development": 2,
+    "City of Tracy business license listings": 3,
+    "Data Axle Reference Solutions": 1450,
+    "EPA ECHO / FRS": 13096,
+    "EPA FRS": 11347,
+    "FDA Device Registration": 454,
+    "Glassfab Tempering Services": 3,
+    "Leprino Foods official careers": 1,
+    "M-FIND v1.1": 3,
+    "NSF manufacturing facility listings": 1,
+    "OSHA ITA": 2388,
+    "US Census TIGER/Line local geocoding": 54,
+    "USDA FSIS via Recall Bench": 238
+  },
+  "source_evidence_counts": {
+    "ARMS Pumps & Repairs USA": 1,
+    "ARMS Pumps & Repairs official website": 1,
+    "CA EDD / Data Axle employer directory": 865,
+    "California ABC": 5781,
+    "California SMARTS": 3689,
+    "City of Tracy Economic Development": 2,
+    "City of Tracy business license listings": 3,
+    "Company / public-record verification": 19,
+    "Company contact verification": 2,
+    "Company staffing statement": 1,
+    "Data Axle Reference Solutions": 1444,
+    "EPA ECHO / FRS": 13093,
+    "EPA FRS": 11347,
+    "FDA Device Registration": 454,
+    "Glassfab Tempering Services": 3,
+    "Leprino Foods official careers": 1,
+    "M-FIND v1.1": 3,
+    "NSF manufacturing facility listings": 1,
+    "OSHA ITA": 2393,
+    "Owner / company research": 109,
+    "US Census TIGER/Line local geocoding": 407,
+    "USDA FSIS via Recall Bench": 238
+  }
 }

@@ -27,7 +27,7 @@ test('public map serves only allowlisted files without credentials or cookies',a
     }
     const manifest=await (await request('/outreach-map/data/manifest.json')).json();assert.equal(manifest.sha256,expected.data_sha256);
     let records=0;for(const chunk of manifest.chunks){const rows=await (await request('/outreach-map/data/'+chunk.path)).json();assert.equal(rows.length,chunk.records);records+=rows.length;}
-    assert.equal(records,30784);assert.equal(records,manifest.total_records);assert.equal(records,expected.records);
+    assert.equal(records,manifest.total_records);assert.equal(records,expected.records);
     for(const url of ['/assets.json','/assets/0000','/serve.cjs','/.access-key','/.share-link','/.env','/.vercel/project.json','/access','/access.js','/access.html','/sources/export.csv','/outreach-map/data/plants.json','/manufacturing-outreach.xlsx','/outreach-map/data/%2e%2e/%2e%2e/assets.json'])for(const method of ['GET','HEAD'])assert.equal((await request(url,{method})).status,404,method+' '+url);
     for(const url of ['/','/access','/outreach-map/ui/index.html','/outreach-map/data/manifest.json']){const r=await request(url,{method:'POST'});assert.equal(r.status,405,url);assert.equal(r.headers.get('allow'),'GET, HEAD');}
     assert.equal((await request('/outreach-map/data/manifest.json',{headers:{Cookie:'__Host-field_atlas=obsolete'}})).status,200);
