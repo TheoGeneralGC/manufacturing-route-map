@@ -2,15 +2,15 @@
 
 Public map: https://manufacturing-route-map.vercel.app
 
-Mobile map for finding manufacturers by business, city, county or ZIP. Includes current-location centering, employee-size colors, plant details, directions and short route planning. No login or private link is required.
+Mobile map for finding manufacturers by business, city, county, state or ZIP. Includes current-location centering, nearby-distance filters, employee-size colors, plant details, directions and short route planning. No login or private link is required.
 
-The September 22, 2026 snapshot contains 31,310 manufacturing prospect records across 39 Central Valley and surrounding California counties. Current-source and historical leads are distinguished. Coverage, headcounts, ownership and locations can be incomplete or uncertain; see each record's source details. This is not a complete census of operating plants.
+The national inventory combines the existing California research with the supplied September 22, 2026 file of 542,407 manufacturing-classified facility candidates across all 50 states and Washington, DC. Current-source signals and historical records are distinguished. Historical records are hidden by default. This is not a complete census or independent verification of operating factories.
 
-The Tracy region contains 1,745 current-source location leads across Tracy, Stockton, Livermore, Manteca, Lathrop, Brentwood, Ripon, Escalon, French Camp, Byron, Vernalis, Discovery Bay and Mountain House. Tracy itself has 224 current-source leads. These include both facility evidence and unverified directory leads. Current totals, employee coverage and separately classified owner/portrait coverage are in `data/coverage.json`. Missing information remains blank; photo links point to identified public sources.
+Current totals and coverage are in `data/coverage.json`; the national integration audit is in `data/national-import-audit.json`. The separately tracked Tracy region includes Tracy, Stockton, Livermore, Manteca, Lathrop, Brentwood, Ripon, Escalon, French Camp, Byron, Vernalis, Discovery Bay and Mountain House. Missing information remains unavailable. Owner portraits link to identified public sources, and regulatory contacts or legal entities are not assumed to be personal owners.
 
-The latest expansion added 28 locations (27 in the region plus Tiger Precision's current Lodi site), enriched 28 existing records, merged two same-site duplicates and moved five former manufacturing records to the historical layer. It screened USDA/CDPH processor batches, chambers and industry directories, then checked company production descriptions. Conflicting addresses, phased production starts and uncertain staffing remain labeled in the individual records.
+Strong same-site/source matches are consolidated while separate plants and contradictory suites are preserved. Uncertain duplicates remain flagged. Original observations and earlier business research are retained in each record's evidence. Existing location IDs and merge aliases preserve browser notes. Reviewed closures and relocations take precedence over incoming regulatory status flags.
 
-The regional pass reviewed all 930 profiles returned by 344 EDD county/industry searches, then corrected duplicate and non-manufacturing records. It is not independent confirmation of every directory listing. See `data/tracy-region-audit.json` for measured coverage and acquisition checks.
+Source coordinates that are administrative/postal centroids, outside broad state bounds, or explicitly less accurate than 1 km are withheld. Bulk Census address matching recovers usable points where possible. Interpolated locations are approximate and do not identify visitor entrances. Unresolved addresses remain searchable. Headcounts retain their source and reporting year; OSHA counts are annual establishment averages.
 
 ## Run checks and deploy
 
@@ -24,7 +24,9 @@ npm run deploy
 npm run verify
 ```
 
-The build expands the compressed dataset into 13 bounded gzip response chunks and packages the UI for a Node.js Vercel function. Only allowlisted UI/data paths are served. The repository excludes library credentials, environment files, deployment tokens, raw source exports, browser notes and Excel workbooks. Visit notes and shortlists stay in the user's browser.
+The build streams the ordered, hashed JSONL parts in `data/national/manifest.json`. It creates a server-side search index and on-demand detail batches. Phones receive bounded result pages and viewport clusters. Only allowlisted UI/metadata and read-only search/detail endpoints are served; internal index/batch paths are not public. See `deploy/NATIONAL.md` for the data contract and verification. The former `data/plants.json.gz` is retained only as a legacy fixture and is not the active national source.
+
+The repository excludes library credentials, environment files, deployment tokens, raw acquisition archives, browser notes and Excel workbooks. Source evidence included in the public normalized records remains accessible through business details. Visit notes and shortlists stay in the user's browser.
 
 `ui/` contains the app and bundled Leaflet dependencies. `data/` contains the compressed normalized snapshot and coverage report. `deploy/` contains the build, server, checks and deployment scripts. `qa/` contains map behavior regression tests.
 

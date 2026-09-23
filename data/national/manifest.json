@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "total_records": 529330,
+  "data_sha256": "8d57b59aa711155c3902c5c10539d1a449df7f4a4dc3cb1cc680fe4330e8be67",
+  "parts": [
+    {
+      "name": "plants-000.jsonl.gz",
+      "sha256": "4a71885ec722ee374a1488fd4136a50b090b9f78798b0df6d3a8e637aa2626fc",
+      "records": 25000,
+      "bytes": 9384580
+    },
+    {
+      "name": "plants-001.jsonl.gz",
+      "sha256": "71849426c5733061e9808acdeca41ca1cbc447d6666668b694d4f81a5a0cde91",
+      "records": 25000,
+      "bytes": 10077712
+    },
+    {
+      "name": "plants-002.jsonl.gz",
+      "sha256": "f1dea1864d9fbb557773a55731b03003665419834d66faf44c034134e6a52476",
+      "records": 25000,
+      "bytes": 8408711
+    },
+    {
+      "name": "plants-003.jsonl.gz",
+      "sha256": "919cb94bafe5083759ad8d0841f6f6a4391d02b3e5879a06960b98e3c4c8f466",
+      "records": 25000,
+      "bytes": 8426628
+    },
+    {
+      "name": "plants-004.jsonl.gz",
+      "sha256": "e0307d4baf311567a55ed501cf6112813e2860e0018ba67cfc1b75cd789bfde9",
+      "records": 25000,
+      "bytes": 8475911
+    },
+    {
+      "name": "plants-005.jsonl.gz",
+      "sha256": "06bb729d3e20d38e63440ed2b172e71e366556271c9141f0b7457f352f7eb8c9",
+      "records": 25000,
+      "bytes": 7280942
+    },
+    {
+      "name": "plants-006.jsonl.gz",
+      "sha256": "9b5be19d9c0f9f87f838e2363473d240ebe98881bff0691315c89ed115d7e55e",
+      "records": 25000,
+      "bytes": 6000861
+    },
+    {
+      "name": "plants-007.jsonl.gz",
+      "sha256": "af654ede1093bc9f2cd3cc00466e82b69343a950b40b64a46b8f2c9abdbfd11e",
+      "records": 25000,
+      "bytes": 5771943
+    },
+    {
+      "name": "plants-008.jsonl.gz",
+      "sha256": "35acdf4e4ef26e9f1b8b22121e96fac9b0bf46ee3678209054f9d728b1367ae1",
+      "records": 25000,
+      "bytes": 5605979
+    },
+    {
+      "name": "plants-009.jsonl.gz",
+      "sha256": "dc2d339464d6acfe49fa5119f2ea01327c16c1ea9f682ca85a070fb730f3c140",
+      "records": 25000,
+      "bytes": 5655515
+    },
+    {
+      "name": "plants-010.jsonl.gz",
+      "sha256": "4e5787693fe7b5e4d063327221e0aa0ebcdddc9b09a8627e4f6bace9065807cc",
+      "records": 25000,
+      "bytes": 5906571
+    },
+    {
+      "name": "plants-011.jsonl.gz",
+      "sha256": "e4b545704e26f9a648e5e712dd776aa1c8d6a163146d5efd5c31cd9bd5d9a025",
+      "records": 25000,
+      "bytes": 5879017
+    },
+    {
+      "name": "plants-012.jsonl.gz",
+      "sha256": "6574ff904c049ef380c3308701636edadb14895324f7fc945e032f927c79c636",
+      "records": 25000,
+      "bytes": 5534729
+    },
+    {
+      "name": "plants-013.jsonl.gz",
+      "sha256": "9ab19d9b87c4ce6aa5e834c7d79cda58d3e113d2ea680ddf5bb63ef7ddc49c52",
+      "records": 25000,
+      "bytes": 5533180
+    },
+    {
+      "name": "plants-014.jsonl.gz",
+      "sha256": "8f184abe798111c5c6883340e5d1a7c239f02db8aa28b9ec53ffd157e5e8a27c",
+      "records": 25000,
+      "bytes": 5917693
+    },
+    {
+      "name": "plants-015.jsonl.gz",
+      "sha256": "b819beb55b3bfa7a8cf6626da7147983fa6e98b19e3cbd6b073f0fe24b3985f1",
+      "records": 25000,
+      "bytes": 5992377
+    },
+    {
+      "name": "plants-016.jsonl.gz",
+      "sha256": "1aa8fd368e22e035bc45d114b5f67af5ee9c7e584d8f24e40ced94da39bcf025",
+      "records": 25000,
+      "bytes": 5896819
+    },
+    {
+      "name": "plants-017.jsonl.gz",
+      "sha256": "5de669943958bffdf05d8d4b01cfc571895d2c8799ec0d275e82456a01cf816a",
+      "records": 25000,
+      "bytes": 5296202
+    },
+    {
+      "name": "plants-018.jsonl.gz",
+      "sha256": "be442547311497af7879276d7d927d0f7b4ff80514e8ef0b7cf63ef1aceb0a0b",
+      "records": 25000,
+      "bytes": 5383564
+    },
+    {
+      "name": "plants-019.jsonl.gz",
+      "sha256": "4b2432035de2b6813eb9a4a05d2d5f905cc3762cd69752aa811d021ba9aaf49a",
+      "records": 25000,
+      "bytes": 6019660
+    },
+    {
+      "name": "plants-020.jsonl.gz",
+      "sha256": "75424957d411f9c8a4d977e94600234cec6cedab5b34a4bf6ceb6694242617ff",
+      "records": 25000,
+      "bytes": 6213109
+    },
+    {
+      "name": "plants-021.jsonl.gz",
+      "sha256": "03228bc6c88996beb675069b9b8e4a39a31151441e973e12df2ed5a29ee14954",
+      "records": 4330,
+      "bytes": 1499975
+    }
+  ]
+}

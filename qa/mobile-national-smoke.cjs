@@ -1,0 +1,56 @@
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const {chromium}=require('/Users/theosteiger/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {execFileSync}=require('node:child_process');
+(async()=>{
+  const server=http.createServer(require('../deploy/.vercel/output/functions/atlas.func/serve.cjs'));
+  await new Promise(r=>server.listen(0,'0.0.0.0',r));
+  const base=`http://127.0.0.1:${server.address().port}`;
+  let dns='';try{dns=JSON.parse(execFileSync('tailscale',['status','--json'],{encoding:'utf8'})).Self.DNSName.replace(/\.$/,'');}catch{}
+  const browser=await chromium.launch({headless:true,executablePath:'/Users/theosteiger/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell',args:[`--unsafely-treat-insecure-origin-as-secure=${base}`]});
+  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true,permissions:['geolocation'],geolocation:{latitude:37.739,longitude:-121.425,accuracy:10}});
+  const page=await context.newPage(),errors=[],queries=[];
+  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.url().includes('/api/query'))queries.push(r.url());});
+  try{
+    await page.goto(base+'/outreach-map/ui/index.html',{waitUntil:'networkidle'});
+    await page.waitForFunction(()=>/matching locations/.test(document.getElementById('result-count').textContent));
+    assert.ok(await page.locator('.leaflet-marker-icon').count()<1300);
+    await page.locator('#search').fill('Tracy, CA');
+    await page.waitForFunction(()=>document.getElementById('search').value==='Tracy, CA' && /matching locations/.test(document.getElementById('result-count').textContent) && document.querySelectorAll('.result-card').length>0);
+    await page.waitForTimeout(600);
+    const cards=await page.locator('.result-card').count();assert.ok(cards>0&&cards<=80);
+    assert.ok((await page.locator('.card-address').allTextContents()).some(t=>t.includes('CA')));
+    await page.locator('.result-card').first().click();
+    await page.locator('#detail-gemini').waitFor({state:'visible'});
+    const title=await page.locator('.detail-name').textContent();assert.ok(title);
+    assert.ok(await page.locator('.directions').count());await page.locator('#detail-gemini').click();
+    assert.match(await page.locator('#gemini-brief').inputValue(),/BUSINESS RECORD:/);
+    await page.locator('#gemini-dialog .close-dialog').click();await page.locator('#detail-close').click();
+    let releaseDetail,detailStarted;
+    const delayedDetail=new Promise(r=>{releaseDetail=r;}),detailSeen=new Promise(r=>{detailStarted=r;});
+    await page.route('**/api/record?**',async route=>{const response=await route.fetch();detailStarted();await delayedDetail;await route.fulfill({response});});
+    await page.locator('[data-view="list"]').click();
+    await page.locator('.result-card').nth(1).click();
+    await Promise.race([detailSeen,new Promise((_,reject)=>setTimeout(()=>reject(Error('Expected an uncached detail request')),15000))]);
+    await page.locator('#filter-button').click();await page.locator('#quality-filter').selectOption('mapped');await page.locator('#filter-form button[type=submit]').click();
+    releaseDetail();await page.waitForTimeout(300);assert.equal(await page.locator('#detail-panel').isVisible(),false,'A detail response from an older filter cannot reopen its record.');
+    await page.unroute('**/api/record?**');
+    await page.locator('#near-me-button').click();
+    await page.waitForFunction(()=>/manufacturers? within/.test(document.getElementById('location-status').textContent));
+    await page.locator('#radius-filter').selectOption('0.5');await page.waitForTimeout(500);
+    assert.ok(queries.some(u=>new URL(u).searchParams.get('radius')==='0.5'));
+    await page.locator('#radius-filter').selectOption('1');await page.waitForTimeout(500);
+    assert.ok(queries.some(u=>new URL(u).searchParams.get('radius')==='1'));
+    await page.locator('#clear-location').click();await page.waitForTimeout(700);
+    assert.equal(new URL(queries.at(-1)).searchParams.has('lat'),false);
+    await page.locator('#filter-button').click();assert.ok(await page.locator('#state-filter').isVisible());
+    await page.locator('#state-filter').selectOption('CA');await page.locator('#filter-form button[type=submit]').click();await page.waitForTimeout(500);
+    assert.equal(new URL(queries.at(-1)).searchParams.get('state'),'CA');
+    await page.locator('#search').fill('Tracy, CA');await page.waitForTimeout(800);
+    const destination=path.resolve(__dirname,'../../plant-outreach-map/sources/us-manufacturing-import/mobile-map-smoke.png');
+    await page.screenshot({path:destination,fullPage:true});
+    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);assert.equal(overflow,false);
+    assert.deepEqual(errors,[]);
+    const report={passed:true,cards,queryRequests:queries.length,maxClientMarkers:await page.locator('.leaflet-marker-icon').count(),viewport:'390x844',screenshot:destination,magicDns:dns||'unavailable',checks:['bounded page and pins','Tracy state-aware search','on-demand full details','stale details canceled after filter change','concise Gemini context','directions links','GPS .5 and1 mile','location off','state filter','no horizontal overflow','no page errors']};
+    fs.writeFileSync(path.resolve(__dirname,'../../plant-outreach-map/sources/us-manufacturing-import/mobile-map-smoke.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+  }finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}
+})().catch(e=>{console.error(e);process.exitCode=1;});

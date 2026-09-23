@@ -37,9 +37,58 @@
     {key:'zero',label:'0 reported',description:'Source reports zero employees',className:'staff-zero',color:'var(--employee-zero)',optional:true},
   ];
   const employeeBandsByKey = Object.fromEntries(employeeBands.map((band) => [band.key,band]));
-  const filterIds = ['county', 'industry', 'employee', 'evidence', 'quality', 'operating', 'owner', 'contact', 'source'];
+  const filterIds = ['state', 'county', 'industry', 'employee', 'evidence', 'quality', 'operating', 'owner', 'contact', 'source'];
   const state = {plants:[],filtered:[],coverage:{},selected:null,status:'all',origin:null,radius:null,locating:false,locationRequest:0,routeIds:[],inView:false,limit:80,markers:new Map(),notes:{},map:null,cluster:null,originMarker:null,accuracyCircle:null,selectedMarker:null,filters:{evidence:'current'},mapRenderGeneration:0,mapRenderTimer:null,loaded:false};
   let toastTimer, searchTimer, saveTimer;
+
+  function remoteParameters(offset = 0) {
+    const params = new URLSearchParams({q:$('search').value,sort:$('sort').value,offset:String(offset),limit:'80',evidence:state.filters.evidence || ''});
+    for(const [key,value] of Object.entries(state.filters))if(value && key!=='unvisited')params.set(key,value);
+    const b=state.map.getBounds(), wrap=x=>((x+180)%360+360)%360-180;
+    params.set('bbox',[b.getEast()-b.getWest()>=360?-180:wrap(b.getWest()),Math.max(-85,b.getSouth()),b.getEast()-b.getWest()>=360?180:wrap(b.getEast()),Math.min(85,b.getNorth())].join(','));
+    params.set('zoom',String(state.map.getZoom()));if(state.inView)params.set('inView','1');
+    if(state.origin&&state.radius!==null){params.set('lat',state.origin.lat);params.set('lon',state.origin.lng);params.set('radius',state.radius);}
+    if(state.status!=='all')params.set('ids',Object.keys(state.notes).filter(id=>state.notes[id]?.[state.status==='saved'?'saved':'visited']).join(','));
+    if(state.filters.unvisited)params.set('exclude',Object.keys(state.notes).filter(id=>state.notes[id]?.visited).join(','));
+    return params;
+  }
+  async function refreshRemote({offset=0,fit=false,mapOnly=false}={}) {
+    if(mapOnly&&!state.inView)offset=state.remoteResult?.offset||0;
+    clearTimeout(state.mapQueryTimer);
+    state.requestController?.abort();const controller=new AbortController();state.requestController=controller;
+    const generation=(state.queryGeneration||0)+1;state.queryGeneration=generation;
+    if(!mapOnly){$('result-count').textContent='Updating results…';state.remoteResult=null;state.filtered=[];state.remoteLayer?.clearLayers();renderListLoading();}
+    try {
+      const response=await fetch(`${state.remote.api}/query?${remoteParameters(offset)}`,{signal:controller.signal,cache:'no-store'});
+      if(!response.ok)throw Error('Search could not load. Try again.');const result=await response.json();
+      if(generation!==state.queryGeneration)return;
+      state.remoteResult=result;state.filtered=result.rows.map(normalize);state.limit=80;
+      for(const p of state.filtered){p.distance=state.origin&&p.mapped?distanceMiles(state.origin.lat,state.origin.lng,p.latitude,p.longitude):null;state.plantsById.set(p.id,p);if(!state.notes[p.id]){const prior=(p.merged_ids||[]).map(id=>state.notes[id]).filter(Boolean).sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')))[0];if(prior)state.notes[p.id]={...prior};}}
+      state.plants=state.filtered;
+      // Keep memory bounded while retaining route stops and a selected full record.
+      if(state.plantsById.size>1800)state.plantsById=new Map([...state.plantsById].filter(([id])=>state.routeIds.includes(id)||state.selected?.id===id||state.filtered.some(p=>p.id===id)));
+      renderList();renderCounts();renderChips();renderEmployeeLegend();renderRemoteMap();
+      if(fit&&result.bounds){const b=result.bounds;state.map.fitBounds([[b[1],b[0]],[b[3],b[2]]],{padding:[60,90],maxZoom:14,animate:false});}
+    }catch(error){if(error.name==='AbortError')return;if(generation!==state.queryGeneration)return;state.remoteResult=null;state.filtered=[];state.plants=[];state.remoteLayer?.clearLayers();$('result-count').textContent='Unable to load results';$('result-subtitle').textContent='Retry to load locations for this search';$('mobile-count').textContent='—';if(state.origin?.label==='Your location')$('location-status').textContent='Nearby results unavailable. Retry the search.';$('result-list').innerHTML=`<div class="empty-state"><p>${esc(error.message)}</p><button class="button" id="retry-query">Retry search</button></div>`;$('retry-query')?.addEventListener('click',()=>refreshRemote({offset}));}
+  }
+  function renderListLoading(){ $('result-list').innerHTML='<div class="loading-state"><span class="loading-dot"></span><p>Loading locations…</p></div>'; }
+  function renderRemoteMap() {
+    if(!state.remoteLayer)state.remoteLayer=L.layerGroup().addTo(state.map);
+    state.remoteLayer.clearLayers();state.cluster.clearLayers();
+    for(const feature of state.remoteResult?.features||[]){
+      if(feature.type==='point'){
+        const p=normalize(feature.row,0);state.plantsById.set(p.id,p);
+        L.marker([p.latitude,visibleLongitude(p.longitude)],{icon:createMarker(p),title:markerDescription(p)}).addTo(state.remoteLayer).bindTooltip(`<strong>${esc(p.name)}</strong><br>${esc(p.industry_detail||p.industry)}<br>${esc(employeeShort(p))}${p.employee_scope?`<br>${esc(p.employee_scope)}`:''}`).on('click',()=>openDetail(p,false));
+      }else{
+        let sum=0;const segments=employeeBands.filter(b=>feature.counts[b.key]).map(b=>{const a=sum/feature.count*100;sum+=feature.counts[b.key];return `${b.color} ${a}% ${sum/feature.count*100}%`;});
+        const label=employeeBands.filter(b=>feature.counts[b.key]).map(b=>`${b.label}: ${format(feature.counts[b.key])}`).join('; ');
+        const marker=L.marker([feature.latitude,visibleLongitude(feature.longitude)],{icon:L.divIcon({className:'map-cluster',iconSize:[52,52],html:`<div class="cluster-distribution" style="background:conic-gradient(${segments.join(',')})"><span class="cluster-count">${format(feature.count)}</span></div>`}),title:`${format(feature.count)} locations. ${label}`}).addTo(state.remoteLayer);
+        marker.bindTooltip(`${format(feature.count)} locations<br>${esc(label)}<br>Tap to zoom and see these locations`);
+        marker.on('click',()=>{const b=feature.bounds;if(state.map.getZoom()>=17){state.inView=true;$('in-view').checked=true;showView('list');}state.map.fitBounds([[b[1],b[0]],[b[3],b[2]]],{padding:[45,70],maxZoom:19,animate:false});refreshRemote();});
+      }
+    }
+  }
+  function visibleLongitude(lng){return state.remote?lng+360*Math.round((state.map.getCenter().lng-lng)/360):lng;}
 
   function toast(message, duration = 6500) {
     $('toast').textContent = message; $('toast').hidden = false;
@@ -84,14 +133,14 @@
     const evidence = Object.hasOwn(evidenceLabels, p.evidence_type) ? p.evidence_type : 'directory_lead';
     const plant = {...p,id:String(p.id ?? `record-${index}`),name:textValue(p.name ?? p.business_name ?? p.company_name ?? 'Unnamed business'),address:textValue(p.address ?? p.street_address ?? p.street),city:textValue(p.city),county:textValue(p.county).replace(/ County$/i,''),state:textValue(p.state || 'CA'),zip:textValue(p.zip ?? p.zip_code ?? p.postal_code),latitude:lat,longitude:lng,employees,employee_range:employeeRange,employee_scope:textValue(p.employee_scope),industry:textValue(p.industry ?? p.industry_description ?? p.naics_description) || 'Industry not specified',naics:textValue(p.naics ?? p.naics_code),owner_name:textValue(p.owner_name),owner_role:textValue(p.owner_role),contact_name:textValue(p.contact_name),contact_role:textValue(p.contact_role),phone:textValue(p.phone),website:textValue(p.website),evidence_type:evidence,geocode_quality:textValue(p.geocode_quality || 'unknown').toLowerCase(),operating_status:textValue(p.operating_status || 'unknown'),source_name:textValue(p.source_name),source_url:textValue(p.source_url)};
     plant.mapped = lat !== null && lng !== null && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 && !(lat === 0 && lng === 0);
-    plant.owner_name = plant.owner_name.trim();
-    plant.contact_name = plant.contact_name.trim();
-    const sourceNames = (Array.isArray(p.sources) ? p.sources : []).map((source) => typeof source === 'string' ? source : source?.name || source?.source_name).filter(Boolean);
+    plant.owner_name = typeof p.owner_name==='boolean'?'':plant.owner_name.trim();
+    plant.contact_name = typeof p.contact_name==='boolean'?'':plant.contact_name.trim();
+    const sourceNames = (Array.isArray(p.sources) ? p.sources : p.sourceNames || []).map((source) => typeof source === 'string' ? source : source?.name || source?.source_name).filter(Boolean);
     plant.sourceNames = [...new Set((sourceNames.length ? sourceNames : plant.source_name.split(';')).map((name) => String(name).trim()).filter(Boolean))];
     plant.bounds = employeeBounds(employees,employeeRange);
     plant.headcount_multiple_addresses = p.headcount_multiple_addresses === true;
     plant.employee_band = employeeBand(plant);
-    plant.search = [plant.name,textValue(p.legal_name),textValue(p.aliases),plant.address,plant.city,plant.county,plant.zip].join(' ').toLocaleLowerCase();
+    plant.search = [plant.name,textValue(p.legal_name),textValue(p.aliases),plant.address,plant.city,plant.state,plant.county,plant.zip,plant.industry,textValue(p.industry_detail)].join(' ').toLocaleLowerCase();
     plant.distance = null;
     return plant;
   }
@@ -99,12 +148,12 @@
   const nearbyZoom = () => state.radius <= 0.5 ? 16 : state.radius <= 1 ? 15 : state.radius <= 2 ? 14 : state.radius <= 5 ? 12 : state.radius <= 15 ? 11 : state.radius <= 30 ? 10 : 9;
   function fullAddress(p) { return p.address || p.city || p.zip ? [p.address,[p.city,p.state,p.zip].filter(Boolean).join(' ')].filter(Boolean).join(', ') : ''; }
   function employeeLabel(p) { return p.employees !== null ? format(p.employees) : p.employee_range || 'Not reported'; }
-  function employeeShort(p) { return p.bounds ? `${employeeLabel(p)}${p.headcount_multiple_addresses ? ' reported across multiple addresses' : ' employees'}` : 'Headcount unavailable'; }
+  function employeeShort(p) { return p.bounds ? `${employeeLabel(p)}${p.headcount_multiple_addresses ? ' reported across multiple addresses' : ' employees'}${p.employees_year ? ` · ${p.employees_year}` : ''}` : 'Headcount unavailable'; }
   function employeeBandInfo(p) { return employeeBandsByKey[p.employee_band || employeeBand(p)] || employeeBandsByKey.unknown; }
   function markerDescription(p) { return `${p.name} · ${employeeShort(p)} · ${evidenceLabels[p.evidence_type]}`; }
   function employeeChip(p) {
     const band = employeeBandInfo(p);
-    return `<span class="employee-chip ${band.className}" title="${esc(band.description)}"><i class="employee-swatch" aria-hidden="true"></i>${esc(employeeShort(p))}${band.key === 'uncertain' ? '<small>Uncertain band</small>' : ''}</span>`;
+    return `<span class="employee-chip ${band.className}" title="${esc([band.description,p.employee_scope].filter(Boolean).join(' · '))}"><i class="employee-swatch" aria-hidden="true"></i>${esc(employeeShort(p))}${band.key === 'uncertain' ? '<small>Uncertain band</small>' : ''}${p.employee_scope ? `<small class="staff-source-scope">${esc(p.employee_scope)}</small>` : ''}</span>`;
   }
   function dateLabel(value) {
     const raw = String(value), monthOnly = /^\d{4}-\d{2}$/.test(raw);
@@ -169,10 +218,11 @@
     tiles.on('tileerror',() => { if (++failedTiles >= 5) { $('map-notice').textContent = 'Map tiles need an internet connection. Your location list and saved notes are still available while this page stays open.'; $('map-notice').hidden = false; }});
     tiles.on('tileload',() => { if (failedTiles) { failedTiles = 0; $('map-notice').hidden = true; }});
     state.cluster = L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:48,disableClusteringAtZoom:17,chunkedLoading:false,animate:false,spiderfyOnMaxZoom:true,iconCreateFunction:createClusterIcon}).addTo(state.map);
-    state.map.on('moveend',() => { if (state.inView && state.loaded) filterResults(false); });
+    state.map.on('moveend',() => { if(state.remote&&state.loaded){clearTimeout(state.mapQueryTimer);state.mapQueryTimer=setTimeout(()=>refreshRemote({mapOnly:true}),180);}else if (state.inView && state.loaded) filterResults(false); });
     state.map.on('click',() => { if (state.selected) closeDetail(); });
   }
   function populateFilters() {
+    if(state.remote){for(const type of ['state','county','industry','source'])for(const [value,count]of state.remote.filters[type]||[]){const option=document.createElement('option');option.value=value;option.textContent=`${type==='county'?value.split('|').reverse().join(', '):value} (${format(count)})`;$(`${type}-filter`).append(option);}return;}
     for (const type of ['county','industry']) {
       const counts = new Map();
       for (const p of state.plants) { const value = p[type] || 'Unknown'; counts.set(value,(counts.get(value)||0)+1); }
@@ -223,6 +273,7 @@
   }
   function filterResults(updateMap = true) {
     if (!state.loaded) return;
+    if(state.remote){closeDetail();return refreshRemote();}
     const query = $('search').value, locality = searchLocality(query);
     const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
     const mapBounds = state.inView ? state.map.getBounds() : null;
@@ -232,6 +283,7 @@
     if (updateMap) renderMap();
   }
   function sortResults() {
+    if(state.remote)return refreshRemote();
     const sort = $('sort').value;
     state.filtered.sort((a,b) => {
       if (sort === 'distance') { const d = (a.distance ?? Infinity) - (b.distance ?? Infinity); if (Number.isFinite(d) && d || d === Infinity || d === -Infinity) return d; }
@@ -240,6 +292,7 @@
     });
   }
   function renderCounts() {
+    if(state.remote){const r=state.remoteResult;if(!r)return;$('result-count').textContent=`${format(r.total)} matching locations`;$('result-subtitle').textContent=`${format(r.mapped)} mapped · ${format(r.total-r.mapped)} address only${state.radius!==null?` · within ${radiusLabel()}`:state.inView?' · in this area':''}`;$('mobile-count').textContent=format(r.total);if(state.origin?.label==='Your location')$('location-status').textContent=`${format(r.total)} manufacturers within ${radiusLabel()} of you`;$('saved-count').textContent=format(Object.values(state.notes).filter(n=>n.saved).length);$('visited-count').textContent=format(Object.values(state.notes).filter(n=>n.visited).length);return;}
     const mapped = state.filtered.reduce((count,p) => count+Number(p.mapped),0);
     $('result-count').textContent = `${format(state.filtered.length)} matching locations`;
     $('result-subtitle').textContent = `${format(mapped)} on map${mapped < state.filtered.length ? ` · ${format(state.filtered.length-mapped)} address only` : ''}${state.radius !== null ? ` · within ${state.radius} mi straight line` : state.inView ? ' · in this area' : ''}`;
@@ -253,17 +306,20 @@
   }
   function renderList() {
     if (!state.filtered.length) {
-      $('result-list').innerHTML = `<div class="empty-state">${icon('search')}<h3>${state.radius !== null ? `No matches within ${radiusLabel()}.` : 'No locations here yet.'}</h3><p>${state.status === 'saved' ? 'Your previously saved locations appear here. Use All results to find more stops.' : state.status === 'visited' ? 'Mark a location visited after your conversation. It will appear here.' : state.radius !== null ? 'Choose a wider radius or Turn off location. This guide covers the Central Valley and surrounding counties; locations without coordinates cannot appear nearby.' : 'Try another search, widen the map, or adjust your filters.'}</p><button class="button" id="empty-reset">Reset search & filters</button></div>`;
+      $('result-list').innerHTML = `<div class="empty-state">${icon('search')}<h3>${state.radius !== null ? `No matches within ${radiusLabel()}.` : 'No locations here yet.'}</h3><p>${state.status === 'saved' ? 'Your previously saved locations appear here. Use All results to find more stops.' : state.status === 'visited' ? 'Mark a location visited after your conversation. It will appear here.' : state.radius !== null ? 'Choose a wider radius or Turn off location. Locations without usable coordinates cannot appear nearby; search their city or ZIP to see address-only leads.' : 'Try another search, widen the map, or adjust your filters.'}</p><button class="button" id="empty-reset">Reset search & filters</button></div>`;
       $('empty-reset').addEventListener('click',resetAll); return;
     }
     $('result-list').innerHTML = state.filtered.slice(0,state.limit).map((p) => {
       const note = state.notes[p.id] || {};
-      return `<button class="result-card${state.selected?.id === p.id ? ' active' : ''}" data-plant="${esc(p.id)}" aria-label="View ${esc([p.name,p.city,employeeShort(p),evidenceLabels[p.evidence_type]].filter(Boolean).join(', '))}"><div class="card-topline"><i class="evidence-dot"></i><span>${esc(p.county ? `${p.county} County` : p.city || 'County unavailable')}</span><span class="evidence-label">${esc(evidenceLabels[p.evidence_type])}</span><span class="card-status">${note.saved ? icon('star','saved-icon') : ''}${note.visited ? icon('check') : ''}</span></div><div class="card-name">${esc(p.name)}</div><div class="card-address">${esc([p.address,p.city].filter(Boolean).join(', ') || 'Address not reported')}</div><div class="card-meta">${employeeChip(p)}${!p.mapped ? '<span class="meta-separator"></span><span>Address only</span>' : ''}${p.distance !== null ? `<span class="distance">${distanceLabel(p)}</span>` : ''}</div></button>`;
-    }).join('') + (state.filtered.length > state.limit ? `<button class="button show-more" id="show-more">Show ${format(Math.min(80,state.filtered.length-state.limit))} more locations</button>` : '');
+      return `<button class="result-card${state.selected?.id === p.id ? ' active' : ''}" data-plant="${esc(p.id)}" aria-label="View ${esc([p.name,p.city,p.state,employeeShort(p),evidenceLabels[p.evidence_type]].filter(Boolean).join(', '))}"><div class="card-topline"><i class="evidence-dot"></i><span>${esc(p.county ? `${p.county} County, ${p.state}` : [p.city,p.state].filter(Boolean).join(', ') || 'County unavailable')}</span><span class="evidence-label">${esc(evidenceLabels[p.evidence_type])}</span><span class="card-status">${note.saved ? icon('star','saved-icon') : ''}${note.visited ? icon('check') : ''}</span></div><div class="card-name">${esc(p.name)}</div><div class="card-address">${esc([p.address,p.city,p.state,p.zip].filter(Boolean).join(', ') || 'Address not reported')}</div><div class="card-address">${esc(p.industry_detail||p.industry)}${p.dedup_review_group?' · Possible duplicate — under review':''}</div><div class="card-meta">${employeeChip(p)}${!p.mapped ? '<span class="meta-separator"></span><span>Address only</span>' : ''}${p.distance !== null ? `<span class="distance">${distanceLabel(p)}</span>` : ''}</div></button>`;
+    }).join('') + (state.remote?`<div class="remote-pagination">${state.remoteResult?.offset?'<button class="button" id="previous-page">Previous 80</button>':''}<span>${format((state.remoteResult?.offset||0)+1)}–${format((state.remoteResult?.offset||0)+state.filtered.length)}</span>${state.remoteResult?.has_more?'<button class="button" id="next-page">Next 80</button>':''}</div>`:state.filtered.length > state.limit ? `<button class="button show-more" id="show-more">Show ${format(Math.min(80,state.filtered.length-state.limit))} more locations</button>` : '');
     $('result-list').querySelectorAll('[data-plant]').forEach((button) => button.addEventListener('click',() => openDetail(state.plantsById.get(button.dataset.plant),true)));
     $('show-more')?.addEventListener('click',() => { const position = $('result-list').scrollTop; state.limit += 80; renderList(); $('result-list').scrollTop = position; });
+    $('next-page')?.addEventListener('click',()=>{refreshRemote({offset:(state.remoteResult?.offset||0)+80});$('result-list').scrollTop=0;});
+    $('previous-page')?.addEventListener('click',()=>{refreshRemote({offset:Math.max(0,(state.remoteResult?.offset||0)-80)});$('result-list').scrollTop=0;});
   }
   function renderMap() {
+    if(state.remote)return renderRemoteMap();
     if (!state.cluster) return;
     const generation = ++state.mapRenderGeneration;
     clearTimeout(state.mapRenderTimer);
@@ -308,7 +364,7 @@
       const key = button.dataset.employeeBand, band = employeeBandsByKey[key];
       const active = (state.filters.employee || '') === key;
       button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active));
-      if (band?.optional) button.hidden = !state.plants.some((p) => p.employee_band === key);
+      if (band?.optional) button.hidden = state.remote?!state.remote.employee_bands.includes(key):!state.plants.some((p) => p.employee_band === key);
     });
   }
   function showView(view) {
@@ -319,7 +375,7 @@
     if (view === 'list') closeDetail();
   }
   function hasUsableStreet(p) {
-    return Boolean(p.address.trim()) && !p.location_requires_access_review && !/\bP\s*\.?\s*O\s*\.?\s*BOX\b|\bP\s*\.?\s*M\s*\.?\s*B\b|\bMAILBOX\b/i.test(p.address);
+    return Boolean(p.address.trim()) && !p.location_requires_access_review && !/^(?:\(?unknown(?: address)?\)?|n\/?a|not (?:reported|available)|unavailable|none|-+)$/i.test(p.address.trim()) && !/\bP\s*\.?\s*O\s*\.?\s*BOX\b|\bP\s*\.?\s*M\s*\.?\s*B\b|\bMAILBOX\b/i.test(p.address);
   }
   function isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (/Mac/.test(navigator.platform || '') && navigator.maxTouchPoints > 1);
@@ -366,7 +422,7 @@
   function businessBrief(p) {
     // Allowlist business facts: never send the user's GPS, private notes, or visit history.
     const pick = (record, fields) => Object.fromEntries(fields.filter((field) => record?.[field] !== undefined && record[field] !== null && record[field] !== '').map((field) => [field,record[field]]));
-    const facts = pick(p,['name','legal_name','aliases','address','city','state','zip','county','latitude','longitude','industry','industry_detail','naics','sic','employees','employee_range','employee_scope','headcount_multiple_addresses','employee_source_address','employee_source_date','owner_name','owner_role','owner_source_url','owner_source_date','owner_photo_url','owner_photo_source_url','contact_name','contact_role','phone','website','operating_status','evidence_type','geocode_quality','updated_at','source_name','source_url']);
+    const facts = pick(p,['name','legal_name','owner_operator','owner_operator_name','aliases','address','city','state','zip','county','latitude','longitude','industry','industry_detail','naics','sic','employees','employees_year','employee_range','employee_scope','headcount_multiple_addresses','employee_source_address','employee_source_date','owner_name','owner_role','owner_source_url','owner_source_date','owner_photo_url','owner_photo_source_url','contact_name','contact_role','phone','website','operating_status','evidence_type','geocode_quality','updated_at','source_name','source_url']);
     facts.sources = (Array.isArray(p.sources) ? p.sources : []).slice(0,16).map((item) => typeof item === 'string' ? item : pick(item,['name','source_name','url','source_url','record_id','snapshot_date','updated_at','retrieved_at']));
     facts.owner_profiles = (Array.isArray(p.owner_profiles) ? p.owner_profiles : []).filter(Boolean).slice(0,12).map((item) => pick(item,['name','role','source_url','source_date','photo_url','photo_source_url','photo_caption','photo_use']));
     facts.headcount_evidence = (Array.isArray(p.headcount_evidence) ? p.headcount_evidence : []).filter(Boolean).slice(0,12).map((item) => pick(item,['employees','employee_range','scope','source_url','source_date','notes']));
@@ -375,7 +431,7 @@
 Return ONLY 3–4 short sentences in one readable paragraph, at most 90 words total. No headings, lists, tables, long background, photos, or follow-up questions. Use plain language and include at most two short inline source links.
 Start with "Worth a visit", "Call first", or "Skip", followed by a brief evidence-based reason for that recommendation. Assess whether this address has current manufacturing activity and a reachable local decision maker; no specific product or service being sold has been supplied, so do not invent a sales fit or assume walk-ins are welcome.
 Then explain what the business actually makes or does at this location, including whether it is a plant, warehouse, office, or former site. Say whether it is independently owned or owned by a parent company, naming the owner or parent when verified. Distinguish owners from founders, CEOs, managers and registered agents; a title alone does not prove ownership, and no parent found does not prove independence.
-Use the remaining sentence only for the most useful visit detail, such as plant headcount, a local contact, access restrictions, or a reason to call first. Distinguish plant headcount from company-wide estimates. If ownership or on-site activity is unverified, say so briefly; if browsing is unavailable, say so and recommend calling first. Do not invent facts. Keep the entire answer within the sentence and word limits.
+Use the remaining sentence only for the most useful visit detail, such as plant headcount, a local contact, access restrictions, or a reason to call first. Distinguish plant headcount from company-wide estimates and preserve the reporting year. The legal_name and owner_operator fields identify source-reported entities, not personal owners. If ownership or on-site activity is unverified, say so briefly; if browsing is unavailable, say so and recommend calling first. Do not invent facts. Keep the entire answer within the sentence and word limits.
 
 BUSINESS RECORD:
 ${JSON.stringify(facts,null,2)}
@@ -426,13 +482,14 @@ END BUSINESS RECORD`;
       $('gemini-status').textContent = `Copy the selected brief manually, then tap ${appUrl ? 'Open Gemini app' : 'Open Gemini'} and paste it.`;
     } finally { button.disabled = false; open.setAttribute('aria-disabled','false'); }
   }
-  function openDetail(p, pan) {
+  async function openDetail(p, pan) {
     if (!p) return;
+    if(state.remote&&p._summary){const id=p.id;state.detailRequest=id;toast('Loading business details…',1500);try{const response=await fetch(`${state.remote.api}/record?id=${encodeURIComponent(id)}`,{cache:'no-store'});if(!response.ok)throw Error('Business details could not load. Try again.');const record=await response.json();if(state.detailRequest!==id)return;p=normalize(record,0);if(state.origin&&p.mapped)p.distance=distanceMiles(state.origin.lat,state.origin.lng,p.latitude,p.longitude);state.plantsById.set(p.id,p);}catch(error){toast(error.message);return;}}
     state.selected = p;
     showView('map');
     if (state.selectedMarker) state.map.removeLayer(state.selectedMarker);
     if (p.mapped) {
-      state.selectedMarker = L.marker([p.latitude,p.longitude],{icon:createMarker(p,true),interactive:false,zIndexOffset:1000}).addTo(state.map);
+      state.selectedMarker = L.marker([p.latitude,visibleLongitude(p.longitude)],{icon:createMarker(p,true),interactive:false,zIndexOffset:1000}).addTo(state.map);
       if (pan) state.map.setView([p.latitude,p.longitude],Math.max(state.map.getZoom(),14),{animate:false});
     } else state.selectedMarker = null;
     renderDetail(); renderList();
@@ -450,8 +507,8 @@ END BUSINESS RECORD`;
     $('detail-panel').innerHTML = `<button class="button square detail-close" id="detail-close" aria-label="Close location details">${icon('close')}</button><div class="detail-category"><i class="evidence-dot"></i>${esc(evidenceLabels[p.evidence_type])}</div><h2 class="detail-name">${esc(p.name)}</h2><p class="detail-address">${esc(fullAddress(p) || 'Street address not reported')}${p.legal_name && p.legal_name.toLocaleLowerCase() !== p.name.toLocaleLowerCase() ? `<br>Reported business: ${esc(p.legal_name)}` : ''}${p.county ? `<br>${esc(p.county)} County` : ''}${p.distance !== null ? `<br>${distanceLabel(p)} from your selected starting point (straight line)` : ''}</p>
       <div class="detail-actions">${googleDirections ? `<a class="button button-primary directions" href="${esc(googleDirections)}" target="_blank" rel="noopener noreferrer">${icon('route')}Get directions in Google Maps</a>` : `<button type="button" class="button directions" disabled>${icon('route')}Street address needed for directions</button>`}<button class="button" id="detail-gemini">Ask Gemini ↗</button><button class="button${note.visited ? ' is-active' : ''}" id="detail-visited" aria-pressed="${Boolean(note.visited)}">${icon('check')}${note.visited ? 'Visited' : 'Mark visited'}</button></div>${appleDirections ? `<div class="apple-map-links"><a class="apple-directions" href="${esc(appleDirections)}" target="${nativeApple ? '_self' : '_blank'}" rel="noopener noreferrer">Open in Apple Maps ↗</a>${nativeApple ? `<a href="${esc(directionsUrl(p,true,true))}" target="_blank" rel="noopener noreferrer">Browser</a>` : ''}</div>` : ''}
       <dl class="detail-facts"><div><dt>EMPLOYEES</dt><dd class="employee-detail-value ${employeeBandInfo(p).className}"><i class="employee-swatch" aria-hidden="true"></i><span class="${p.bounds ? 'large-value' : ''}">${esc(employeeLabel(p))}</span></dd>${p.headcount_multiple_addresses ? `<small class="employee-scope-warning">${esc(employeeLabel(p))} reported across multiple addresses. Individual building counts are unavailable.</small>` : ''}<small>${esc(p.employee_scope || (p.bounds ? 'Scope not specified by source' : 'No reported headcount'))}</small></div><div><dt>SOURCE STATUS</dt><dd>${esc(p.operating_status === 'unknown' ? 'Not verified' : p.operating_status)}</dd>${note.visited_at ? `<small>Visited ${esc(dateLabel(note.visited_at))}</small>` : ''}</div><div class="full"><dt>INDUSTRY</dt><dd>${esc(p.industry_detail || p.industry)}</dd>${p.naics ? `<small>NAICS ${esc(p.naics)}</small>` : ''}</div><div class="full"><dt>REPORTED OWNER</dt><dd>${esc(p.owner_name || 'Not reported')}</dd>${ownerDetails(p)}</div>${p.headcount_evidence?.length ? `<div class="full"><dt>ADDITIONAL STAFFING SOURCES</dt><dd>${additionalStaffing(p)}</dd></div>` : ''}${p.contact_name ? `<div class="full"><dt>REPORTED BUSINESS CONTACT</dt><dd>${esc(p.contact_name)}</dd><small>${esc(p.contact_role || 'Role not specified')} · Not necessarily the owner</small></div>` : ''}${website || phone ? `<div class="full contact-links">${phone ? `<a href="${esc(phone)}">${esc(p.phone)}</a>` : ''}${website ? `<a href="${esc(website)}" target="_blank" rel="noopener noreferrer">Business website ↗</a>` : ''}</div>` : ''}</dl>
-      ${warning ? `<div class="detail-warning">${esc(warning)}</div>` : ''}<section class="detail-section"><label class="notes-label" for="visit-notes">Your field notes <span id="notes-status">Saved on this device</span></label><textarea id="visit-notes" placeholder="Who you met, best time to return, what to follow up on…" maxlength="12000">${esc(note.notes || '')}</textarea><p class="detail-footnote">Notes and visit history stay in this browser. Back them up from About the data before switching devices.</p></section>
-      <section class="detail-section"><h3>Location & source</h3><p>${p.mapped ? `Coordinates: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}<br>` : ''}Location precision: ${esc(p.geocode_quality || 'Not reported')}${p.geocode_provider ? `<br>Coordinate provider: ${esc(p.geocode_provider)}` : ''}${p.headcount_multiple_addresses && p.employee_source_address ? `<br>Employee reporting addresses: ${esc(p.employee_source_address)}` : ''}${p.updated_at ? `<br>Record date: ${esc(dateLabel(p.updated_at) || p.updated_at)}` : ''}</p>${sourceList(p)}${p.notes ? `<p>${esc(textValue(p.notes))}</p>` : ''}</section>`;
+      ${warning ? `<div class="detail-warning">${esc(warning)}</div>` : ''}${p.dedup_review_group?`<div class="detail-warning">Possible duplicate under review. ${esc(p.dedup_review_reason||'Identity or address evidence does not support a safe merge yet.')}</div>`:''}<section class="detail-section"><label class="notes-label" for="visit-notes">Your field notes <span id="notes-status">Saved on this device</span></label><textarea id="visit-notes" placeholder="Who you met, best time to return, what to follow up on…" maxlength="12000">${esc(note.notes || '')}</textarea><p class="detail-footnote">Notes and visit history stay in this browser. Back them up from About the data before switching devices.</p></section>
+      <section class="detail-section"><h3>Location & source</h3><p>${p.mapped ? `Coordinates: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}<br>` : ''}Location precision: ${esc(p.geocode_quality || 'Not reported')}${p.geocode_provider ? `<br>Coordinate provider: ${esc(p.geocode_provider)}` : ''}${p.headcount_multiple_addresses && p.employee_source_address ? `<br>Employee reporting addresses: ${esc(p.employee_source_address)}` : ''}${p.updated_at ? `<br>Record date: ${esc(dateLabel(p.updated_at) || p.updated_at)}` : ''}</p>${p.owner_operator||p.owner_operator_name?`<p>Source-reported owner/operator entity: ${esc(p.owner_operator||p.owner_operator_name)}. This identifies an organization, not a personal owner.</p>`:''}${sourceList(p)}${p.notes ? `<p>${esc(textValue(p.notes))}</p>` : ''}</section>`;
     $('detail-panel').hidden = false;
     if (focusedControl && $(focusedControl)) $(focusedControl).focus({preventScroll:true});
     $('detail-close').addEventListener('click',closeDetail);
@@ -464,6 +521,7 @@ END BUSINESS RECORD`;
     });
   }
   function closeDetail() {
+    state.detailRequest=null;
     const wasFocused = $('detail-panel').contains(document.activeElement);
     state.selected = null; $('detail-panel').hidden = true;
     if (state.selectedMarker) { state.map?.removeLayer(state.selectedMarker); state.selectedMarker = null; }
@@ -562,7 +620,8 @@ END BUSINESS RECORD`;
     return url.href.length <= 2048 ? url.href : '';
   }
   function renderRoute() {
-    const saved = [...new Map([...state.plants.filter((p) => state.notes[p.id]?.saved || state.routeIds.includes(p.id)),...state.filtered.slice(0,150)].map((p) => [p.id,p])).values()].sort((a,b) => (a.distance ?? Infinity)-(b.distance ?? Infinity) || a.name.localeCompare(b.name));
+    const pool=state.remote?[...state.plantsById.values()]:state.plants;
+    const saved = [...new Map([...pool.filter((p) => state.notes[p.id]?.saved || state.routeIds.includes(p.id)),...state.filtered.slice(0,150)].map((p) => [p.id,p])).values()].sort((a,b) => (a.distance ?? Infinity)-(b.distance ?? Infinity) || a.name.localeCompare(b.name));
     const eligible = saved.filter((p) => p.mapped && directionsUrl(p));
     state.routeIds = state.routeIds.filter((id) => eligible.some((p) => p.id===id)).slice(0,4);
     const stops = state.routeIds.map((id) => state.plantsById.get(id));
@@ -585,6 +644,7 @@ END BUSINESS RECORD`;
     renderRoute(); $('route-dialog').showModal();
   }
   function fitResults() {
+    if(state.remote){closeDetail();showView('map');return refreshRemote({fit:true});}
     const points = state.filtered.filter((p) => p.mapped).map((p) => [p.latitude,p.longitude]);
     if (!points.length) { toast('These results have no map coordinates. Open a location to get directions from its address.'); return; }
     closeDetail(); state.map.fitBounds(points,{padding:[55,70],maxZoom:14,animate:false}); showView('map');
@@ -595,14 +655,17 @@ END BUSINESS RECORD`;
   function download(name,content,type) {
     const url = URL.createObjectURL(new Blob([content],{type})), a = document.createElement('a'); a.href = url; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url),1000);
   }
-  function exportCsv() {
+  async function exportCsv() {
+    let exportRows=state.filtered;
+    if(state.remote){const snapshots=state.filtered.slice();toast('Preparing this page’s CSV…');try{const full=[];for(let i=0;i<snapshots.length;i+=4){const rows=await Promise.all(snapshots.slice(i,i+4).map(async p=>{const r=await fetch(`${state.remote.api}/record?id=${encodeURIComponent(p.id)}`);if(!r.ok)throw Error('Export could not load every business. Try again.');return normalize(await r.json(),0);}));full.push(...rows);}exportRows=full;}catch(error){toast(error.message);return;}}
     const fields = ['id','name','address','city','county','state','zip','latitude','longitude','industry','industry_detail','naics','employees','employee_range','employee_band','employees_year','employee_source_url','headcount_evidence','employee_scope','headcount_multiple_addresses','employee_source_address','owner_name','owner_role','owner_source_url','owner_photo_url','owner_photo_source_url','owner_profiles','contact_name','contact_role','phone','website','operating_status','evidence_type','geocode_quality','geocode_provider','source_name','source_url','updated_at','shortlisted','visited','visited_at','field_notes'];
     // Neutralize spreadsheet formula prefixes in any imported text, preserving the source in JSON.
     const cell = (value) => { let str = value && typeof value === 'object' ? JSON.stringify(value) : textValue(value); if (/^[\s]*[=+@-]/.test(str) && typeof value !== 'number') str = `'${str}`; return `"${str.replace(/"/g,'""')}"`; };
-    const rows = state.filtered.map((p) => { const n = state.notes[p.id] || {}; const row = {...p,shortlisted:Boolean(n.saved),visited:Boolean(n.visited),visited_at:n.visited_at || '',field_notes:n.notes || ''}; return fields.map((field) => cell(row[field])).join(','); });
-    download(`manufacturing-outreach-${new Date().toISOString().slice(0,10)}.csv`,'\ufeff'+[fields.join(','),...rows].join('\r\n'),'text/csv;charset=utf-8'); toast(`Exported ${format(rows.length)} filtered locations, including your field notes.`);
+    const rows = exportRows.map((p) => { const n = state.notes[p.id] || {}; const row = {...p,shortlisted:Boolean(n.saved),visited:Boolean(n.visited),visited_at:n.visited_at || '',field_notes:n.notes || ''}; return fields.map((field) => cell(row[field])).join(','); });
+    download(`manufacturing-outreach-${new Date().toISOString().slice(0,10)}.csv`,'\ufeff'+[fields.join(','),...rows].join('\r\n'),'text/csv;charset=utf-8'); toast(`Exported ${format(rows.length)} ${state.remote?'displayed-page':'filtered'} locations, including your field notes.`);
   }
   function renderCoverage() {
+    if(state.remote){const c=state.coverage;$('coverage-content').innerHTML=`<div class="coverage-stats"><div><strong>${format(c.current_source_records||0)}</strong><small>Current-source leads</small></div><div><strong>${format(c.historical_records||0)}</strong><small>Historical / unverified</small></div><div><strong>${format(state.remote.total_records)}</strong><small>Total locations</small></div></div><p>United States manufacturing candidates. Historical records are hidden by default. Current-source signals can be regulatory or directory evidence and do not establish current production. Missing or coarse coordinates remain address-only leads.</p><p>The map loads locations for your view. Cluster numbers count matching locations, including all pages of results. Rings show employee-size distribution, not total staff. Employee ranges and company-wide counts remain qualified.</p><p>Search a business, industry, ZIP, or a city and state such as “Tracy, CA”. Use My location to see nearby results. Turn off location to browse nationwide. Location is used only for your search; no server-side visit history is stored.</p><p>Possible duplicate flags identify unresolved identity conflicts. Different suites or plants are kept separate when a merge is not supported.</p><h3>Sources</h3>${(c.sources||[]).map(s=>`<p>${safeUrl(s.url)?`<a href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a>`:esc(s.name)}${s.records!==undefined?` · ${format(s.records)} source records`:''}</p>`).join('')}<h3>Your notes</h3><p>Notes, saved locations and visit history stay on this device. Back them up before switching devices. The Excel inventory contains all records; browser CSV export covers the displayed page.</p>`;return;}
     const c = state.coverage, mapped = state.plants.filter((p) => p.mapped).length;
     const counts = new Map(); for (const p of state.plants) counts.set(p.county || 'Unknown',(counts.get(p.county || 'Unknown')||0)+1);
     const limits = Array.isArray(c.limitations) ? c.limitations : [];
@@ -618,7 +681,8 @@ END BUSINESS RECORD`;
       if (state.filters.city && $('search').value.trim().toLocaleLowerCase() !== state.filters.city.toLocaleLowerCase()) delete state.filters.city;
       // A typed destination searches the full coverage area, even after a nearby search.
       if (state.radius !== null || state.locating) clearNearby(false);
-      clearTimeout(searchTimer); searchTimer = setTimeout(() => { filterResults(); if ($('search').value.trim()) { const points=state.filtered.filter((p) => p.mapped).map((p) => [p.latitude,p.longitude]); if (points.length) state.map.fitBounds(points,{padding:[60,120],maxZoom:14,animate:false}); showView('list'); } else showView('map'); },200);
+      if(state.remote){state.inView=!$('search').value.trim();$('in-view').checked=state.inView;}
+      clearTimeout(searchTimer); searchTimer = setTimeout(() => { if(state.remote){closeDetail();refreshRemote({fit:Boolean($('search').value.trim())});showView($('search').value.trim()?'list':'map');return;}filterResults(); if ($('search').value.trim()) { const points=state.filtered.filter((p) => p.mapped).map((p) => [p.latitude,p.longitude]); if (points.length) state.map.fitBounds(points,{padding:[60,120],maxZoom:14,animate:false}); showView('list'); } else showView('map'); },250);
     });
     document.querySelectorAll('[data-employee-band]').forEach((button) => button.addEventListener('click',() => {
       const key = button.dataset.employeeBand;
@@ -635,7 +699,7 @@ END BUSINESS RECORD`;
     $('coverage-button').addEventListener('click',() => { renderCoverage(); $('coverage-dialog').showModal(); });
     document.querySelectorAll('.close-dialog').forEach((button) => button.addEventListener('click',() => button.closest('dialog').close()));
     document.querySelectorAll('dialog').forEach((dialog) => dialog.addEventListener('click',(event) => { if (event.target === dialog) { const rect=dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } }));
-    $('filter-form').addEventListener('submit',(event) => { event.preventDefault(); for (const id of filterIds) state.filters[id] = $(`${id}-filter`).value; state.filters.unvisited = $('unvisited-filter').checked; $('filter-dialog').close(); filterResults(); });
+    $('filter-form').addEventListener('submit',(event) => { event.preventDefault(); for (const id of filterIds) state.filters[id] = $(`${id}-filter`).value; state.filters.unvisited = $('unvisited-filter').checked; $('filter-dialog').close(); if(state.remote&&(state.filters.state||state.filters.county)){state.inView=false;$('in-view').checked=false;closeDetail();refreshRemote({fit:true});}else filterResults(); });
     $('reset-filters').addEventListener('click',() => { for (const id of filterIds) $(`${id}-filter`).value = id === 'evidence' ? 'current' : ''; $('unvisited-filter').checked = false; state.filters = {evidence:'current'}; filterResults(); });
     $('location-button').addEventListener('click',useLocation);
     $('near-me-button').addEventListener('click',useLocation);
@@ -687,6 +751,7 @@ END BUSINESS RECORD`;
     }
     if (!response.ok) throw new Error(`The location manifest could not load (HTTP ${response.status}). Reload to sign in or retry.`);
     const manifest=await response.json();
+    if(manifest.version===2){if(manifest.api!=='/outreach-map/api'||!Number.isInteger(manifest.total_records)||!manifest.filters)throw Error('The national location manifest is invalid.');state.remote=manifest;return [];}
     if (manifest.version!==1 || !Number.isInteger(manifest.total_records) || manifest.total_records<0 || !Array.isArray(manifest.chunks) || manifest.chunks.length>1000 || manifest.chunks.some((chunk) => !/^plants-\d+\.json$/.test(chunk.path) || !Number.isInteger(chunk.records) || chunk.records<0)) throw new Error('The location manifest is invalid. Reload after the dataset is updated.');
     if (new Set(manifest.chunks.map((chunk) => chunk.path)).size!==manifest.chunks.length) throw new Error('The location manifest contains duplicate chunks.');
     const results=new Array(manifest.chunks.length); let cursor=0;
@@ -718,9 +783,10 @@ END BUSINESS RECORD`;
       populateFilters();
       const requestedCity = new URLSearchParams(location.search).get('city');
       if (requestedCity) { state.filters.city = requestedCity; $('search').value = requestedCity; }
-      state.loaded = true; filterResults(); fitResults();
+      state.loaded = true;
+      if(state.remote){$('export-button').textContent='Export page';$('export-button').setAttribute('aria-label','Export the displayed page of results');if(!requestedCity){state.inView=true;$('in-view').checked=true;}await refreshRemote({fit:Boolean(requestedCity)});}else{filterResults();fitResults();}
       const date = dateLabel(state.coverage.generated_at); if (date) $('data-date').textContent = `Assembled ${date}`;
-      if (!state.plants.length) toast('The dataset is empty. Add source records to begin planning outreach.');
+      if (!state.remote && !state.plants.length) toast('The dataset is empty. Add source records to begin planning outreach.');
     } catch(error) {
       showView('list');
       $('result-count').textContent = 'Data unavailable';

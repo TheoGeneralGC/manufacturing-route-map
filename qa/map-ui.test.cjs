@@ -264,7 +264,8 @@ assert.deepEqual(searchIds('San Joaquin County'),['city','county'],'Explicit Cou
 assert.deepEqual(searchIds('95376'),['city'],'ZIP search excludes a street number equal to that ZIP elsewhere.');
 assert.deepEqual(searchIds('95376-1234'),['city'],'ZIP+4 query resolves the five-digit locality.');
 assert.deepEqual(searchIds('Tracy Fab'),['business'],'Non-locality queries still find business names.');
-for(const query of ['Contactonly','Secretowner','Secretsource','Secretindustry']) assert.deepEqual(searchIds(query),[],`Unadvertised field ${query} does not affect search.`);
+for(const query of ['Contactonly','Secretowner','Secretsource']) assert.deepEqual(searchIds(query),[],`Unadvertised field ${query} does not affect search.`);
+assert.deepEqual(searchIds('Secretindustry'),['contact'],'Manufacturing activity is searchable.');
 
 async function testMobileAndProductionLoading() {
   const {useLocation,clearNearby,shortestStopOrder,routeUrl,loadPlants,setupEvents}=context.qa;
@@ -416,7 +417,7 @@ async function testMobileAndProductionLoading() {
   renderRoute();assert.match(element('route-options').innerHTML,/Tracy Plant/);assert.doesNotMatch(element('route-options').innerHTML,/Add to shortlist/);
   const html=fs.readFileSync(path.join(__dirname,'../ui/index.html'),'utf8');
   for(const radius of ['0.5','1','2','5','15','30','60'])assert.ok(html.includes(`value="${radius}"`));
-  assert.match(html,/placeholder="Business, city, county or ZIP"/);assert.doesNotMatch(html,/Field Atlas|class="sidebar"|class="brand"/,'No visible branding or left drawer remains.');
+  assert.match(html,/placeholder="Business, type, city, state or ZIP"/);assert.doesNotMatch(html,/Field Atlas|class="sidebar"|class="brand"/,'No visible branding or left drawer remains.');
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'Each UI control has a unique ID.');
   console.log('Passed GPS success/permission/timeout/unavailable/insecure/cancellation, nearby reset and search, route ordering/mobile limits, and atomic production chunk loading regressions.');
 }

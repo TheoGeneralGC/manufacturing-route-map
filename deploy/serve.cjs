@@ -1,6 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = __dirname;
+const {gzipSync}=require('node:zlib');
+const store=require('./query.cjs').createStore(root);
 const assets = JSON.parse(fs.readFileSync(path.join(root, 'assets.json'), 'utf8'));
 const headers = {
   'Cache-Control': 'no-store, max-age=0',
@@ -28,6 +30,16 @@ module.exports = async function serve(req, res) {
     if (pathname === '/') {
       const city = url.searchParams.get('city');
       res.statusCode = 303; res.setHeader('Location', '/outreach-map/ui/index.html' + (city && city.length < 80 ? `?city=${encodeURIComponent(city)}` : '') + '#'); return res.end();
+    }
+    if (pathname === '/outreach-map/api/query' || pathname === '/outreach-map/api/record') {
+      if (req.url.length > 150000) return send(res,414,'Search request is too long.');
+      const result = pathname.endsWith('/record') ? await store.detail((url.searchParams.get('id')||'').slice(0,250)) : await store.query(url.searchParams);
+      if (!result) return send(res,404,'Record not found.');
+      const raw=Buffer.from(JSON.stringify(result)), gzip=/(?:^|,)\s*gzip\b/.test(req.headers['accept-encoding']||''), body=gzip?gzipSync(raw):raw;
+      if(body.length>=4_000_000)return send(res,413,'Result is too large. Narrow the search.');
+      res.statusCode=200;res.setHeader('Content-Type','application/json; charset=utf-8');
+      if(gzip)res.setHeader('Content-Encoding','gzip');res.setHeader('Content-Length',body.length);
+      return res.end(req.method==='HEAD'?undefined:body);
     }
     const asset = Object.hasOwn(assets, pathname) ? assets[pathname] : null;
     if (!asset) return send(res, 404, 'Not found.');

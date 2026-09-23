@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "node deploy/build.mjs",
-    "test": "node --test deploy/security.test.cjs qa/map-ui.test.cjs",
+    "test": "node --test deploy/security.test.cjs qa/map-ui.test.cjs qa/national-query.test.cjs qa/national-ui-state.test.cjs",
     "deploy": "node deploy/deploy.mjs --prod",
     "verify": "node deploy/verify-live.mjs"
   }

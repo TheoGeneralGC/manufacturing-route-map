@@ -8,7 +8,7 @@ test('public map serves only allowlisted files without credentials or cookies',a
   const assets=JSON.parse(fs.readFileSync(path.join(bundle,'assets.json')));
   const expected=JSON.parse(fs.readFileSync(path.join(__dirname,'build-manifest.json')));
   assert.equal(expected.access,'public');
-  assert.deepEqual(fs.readdirSync(bundle).sort(),['.vc-config.json','assets','assets.json','serve.cjs']);
+  assert.deepEqual(fs.readdirSync(bundle).sort(),['.vc-config.json','assets','assets.json','index','index-catalog.json.gz','index-files.json','lookup','query.cjs','records','serve.cjs']);
   const server=http.createServer(require(path.join(bundle,'serve.cjs')));
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
   const base=`http://127.0.0.1:${server.address().port}`;
@@ -26,10 +26,16 @@ test('public map serves only allowlisted files without credentials or cookies',a
       const body=await r.arrayBuffer();if(method==='HEAD')assert.equal(body.byteLength,0);else assert.ok(body.byteLength>0);
     }
     const manifest=await (await request('/outreach-map/data/manifest.json')).json();assert.equal(manifest.sha256,expected.data_sha256);
-    let records=0;for(const chunk of manifest.chunks){const rows=await (await request('/outreach-map/data/'+chunk.path)).json();assert.equal(rows.length,chunk.records);records+=rows.length;}
-    assert.equal(records,manifest.total_records);assert.equal(records,expected.records);
+    assert.equal(manifest.version,2);assert.equal(manifest.total_records,expected.records);
+    const all=await (await request('/outreach-map/api/query?evidence=&bbox=-180,-85,180,85&zoom=3')).json();
+    assert.equal(all.total,expected.records);assert.ok(all.rows.length<=80);assert.ok(all.features.length<=1200);assert.equal(all.features.reduce((n,p)=>n+(p.count||1),0),all.viewport_mapped);
+    const current=await (await request('/outreach-map/api/query')).json();assert.ok(current.total<=all.total);assert.ok(current.rows.every(p=>p.evidence_type!=='historical_registry'));
+    for(const p of all.rows.slice(0,3)){const detail=await (await request('/outreach-map/api/record?id='+encodeURIComponent(p.id))).json();assert.equal(detail.id,p.id);assert.ok(detail.sources);assert.ok(!detail._summary);}
+    assert.equal((await request('/outreach-map/api/record?id=../../assets.json')).status,404);
+    for(const url of ['/index-files.json','/index-catalog.json.gz','/index/CA-0.json.gz','/lookup/0.json.gz','/records/0.json.gz','/query.cjs'])assert.equal((await request(url)).status,404);
+    const records=all.total;
     for(const url of ['/assets.json','/assets/0000','/serve.cjs','/.access-key','/.share-link','/.env','/.vercel/project.json','/access','/access.js','/access.html','/sources/export.csv','/outreach-map/data/plants.json','/manufacturing-outreach.xlsx','/outreach-map/data/%2e%2e/%2e%2e/assets.json'])for(const method of ['GET','HEAD'])assert.equal((await request(url,{method})).status,404,method+' '+url);
-    for(const url of ['/','/access','/outreach-map/ui/index.html','/outreach-map/data/manifest.json']){const r=await request(url,{method:'POST'});assert.equal(r.status,405,url);assert.equal(r.headers.get('allow'),'GET, HEAD');}
+    for(const url of ['/','/access','/outreach-map/ui/index.html','/outreach-map/data/manifest.json','/outreach-map/api/query','/outreach-map/api/record']){const r=await request(url,{method:'POST'});assert.equal(r.status,405,url);assert.equal(r.headers.get('allow'),'GET, HEAD');}
     assert.equal((await request('/outreach-map/data/manifest.json',{headers:{Cookie:'__Host-field_atlas=obsolete'}})).status,200);
     assert.equal((await request('/healthz')).status,200);assert.equal((await request('/robots.txt')).status,200);
     console.log(`Verified ${records} public rows, ${Object.keys(assets).length} GET/HEAD assets, no cookies, redirects, POST and internal-file denial.`);
